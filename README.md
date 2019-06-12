@@ -1,1 +1,1 @@
-# DDK.Registry
+# DDK Registry
