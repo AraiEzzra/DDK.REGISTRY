@@ -1,0 +1,28 @@
+{
+  "name": "ddk.registry",
+  "version": "1.0.0",
+  "description": "DDK shared data on TypeScript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AraiEzzra/DDK.REGISTRY.git"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^12.0.7",
+    "@types/node-fetch": "^2.3.4",
+    "@types/uuidv4": "^2.0.0",
+    "ts-loader": "^6.0.2",
+    "tslint": "^5.17.0",
+    "typescript": "^3.5.1"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.0",
+    "uuidv4": "^4.0.0"
+  }
+}
