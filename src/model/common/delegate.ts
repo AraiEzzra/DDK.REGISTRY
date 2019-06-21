@@ -9,6 +9,14 @@ export type Delegate = {
     confirmedVoteCount: number;
 };
 
+export enum ForgeStatus {
+    WAITING = 'WAITING',
+    FORGING = 'FORGING',
+    FORGED = 'FORGED',
+    MISSED = 'MISSED',
+}
+
 export type ActiveDelegate = Delegate & {
     slotNumber: number,
+    status: ForgeStatus,
 };
