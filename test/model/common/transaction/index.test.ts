@@ -4,7 +4,7 @@ import { Transaction } from '../../../../src/model/common/transaction';
 import { AssetSend } from '../../../../src/model/common/transaction/asset/send';
 import { TransactionType } from '../../../../src/model/common/transaction/type';
 
-describe('Transaction', () => {
+describe('Transaction Model', () => {
     it('Copy', () => {
         const trs = new Transaction<AssetSend>({
             id: '2c52682e6a51a9ddfd48a679a95c9fea4e693790aec5968535a482088b6c75bf',

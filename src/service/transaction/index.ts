@@ -16,6 +16,7 @@ export type TransactionData = {
     type: TransactionType;
     createdAt: Timestamp;
     asset: Asset;
+    salt?: string;
     id?: TransactionId;
     blockId?: BlockId;
 };
@@ -29,12 +30,12 @@ export interface ITransactionCreator {
     ): ResponseEntity<Transaction<any>>;
 
     getBytes(
-        trs: TransactionSchema<any>,
+        trs: TransactionSchema<Asset>,
         skipSignature: boolean,
         skipSecondSignature: boolean,
     ): Buffer;
 
-    getHash(trs: TransactionSchema<any>): Buffer;
+    getHash(trs: TransactionSchema<Asset>): Buffer;
 }
 
 export class TransactionCreator implements ITransactionCreator {
@@ -66,12 +67,13 @@ export class TransactionCreator implements ITransactionCreator {
         if (secondKeyPair) {
             transaction.secondSignature = this.sign(secondKeyPair, transaction);
         }
+        transaction.id = this.getId(transaction);
 
         return new ResponseEntity({ data: new Transaction<any>(transaction) });
     }
 
     getBytes(
-        trs: TransactionSchema<any>,
+        trs: TransactionSchema<Asset>,
         skipSignature: boolean = false,
         skipSecondSignature: boolean = false,
     ): Buffer {
@@ -93,11 +95,15 @@ export class TransactionCreator implements ITransactionCreator {
         ]);
     }
 
-    getHash(trs: TransactionSchema<any>): Buffer {
+    getHash(trs: TransactionSchema<Asset>): Buffer {
         return crypto.createHash('sha256').update(this.getBytes(trs)).digest();
     }
 
-    private sign(keyPair: IKeyPair, trs: TransactionSchema<any>): string {
+    getId(trs: TransactionSchema<any>): string {
+        return this.getHash(trs).toString('hex');
+    }
+
+    private sign(keyPair: IKeyPair, trs: TransactionSchema<Asset>): string {
         return this.ed.sign(this.getHash(trs), keyPair).toString('hex');
     }
 }
