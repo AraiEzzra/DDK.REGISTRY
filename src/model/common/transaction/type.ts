@@ -1,5 +1,5 @@
 export enum TransactionType {
-    REGISTER = 0,
+    REFERRAL = 0,
     SEND = 10,
     SIGNATURE = 20,
     DELEGATE = 30,

@@ -1,86 +1,81 @@
 import crypto from 'crypto';
 
-import { Timestamp, Address } from '../../model/common/type';
-import { IAssetService } from './asset/interface';
+import { Transaction, TransactionSchema } from '../../model/common/transaction';
+import { IKeyPair, Ed, ed } from '../../util/ed';
+import { PublicKey, Timestamp, TransactionId, BlockId } from '../../model/common/type';
 import { TransactionType } from '../../model/common/transaction/type';
-import { IKeyPair, ed } from '../../util/ed';
-import { Transaction } from '../../model/common/transaction';
-import { createKeyPairBySecret } from '../../util/crypto';
+import { ResponseEntity } from '../../model/responseEntity';
+import { getAddressByPublicKey } from '../../util/account';
+import BUFFER from '../../util/buffer';
+import { TRANSACTION_BUFFER_SIZE } from '../../util/transaction';
+import { Asset } from '../../model/common/transaction/asset';
+import { Account } from '../../model/common/account';
 
-export type AccountData = {
-    senderPublicKey: string;
-    senderAddress: Address;
-    secret: string;
-    secondSecret?: string;
-    createdAt?: Timestamp;
+export type TransactionData = {
+    senderPublicKey: PublicKey;
+    type: TransactionType;
+    createdAt: Timestamp;
+    asset: Asset;
+    id?: TransactionId;
+    blockId?: BlockId;
 };
 
-const TransactionAssetMap: { [type: string]: IAssetService<any> } = {
-    [TransactionType.REGISTER]: RegisterAssetService,
-    [TransactionType.SEND]: SendAssetService,
-    [TransactionType.SIGNATURE]: SignatureAssetService,
-    [TransactionType.DELEGATE]: DelegateAssetService,
-    [TransactionType.STAKE]: StakeAssetService,
-    [TransactionType.VOTE]: VoteAssetService,
-};
+export interface ITransactionCreator {
+    create(
+        data: TransactionData,
+        sender: Account,
+        keyPair: IKeyPair,
+        secondKeyPair?: IKeyPair,
+    ): ResponseEntity<Transaction<any>>;
 
-class TransactionService<T> {
+    getBytes(
+        trs: TransactionSchema<any>,
+        skipSignature: boolean,
+        skipSecondSignature: boolean,
+    ): Buffer;
 
-    create(type: TransactionType, accountData: AccountData, asset: T): BaseTrsRequest<T> {
-        return {
-            trs: {
-                type,
-                senderPublicKey: accountData.senderPublicKey,
-                senderAddress: accountData.senderAddress,
-                asset: TransactionAssetMap[type].create(asset)
-            },
-            secret: accountData.secret,
-            ...(accountData.secondSecret && { secondSecret: accountData.secondSecret }),
-        };
+    getHash(trs: TransactionSchema<any>): Buffer;
+}
+
+export class TransactionCreator implements ITransactionCreator {
+    private ed: Ed;
+
+    constructor(_ed: Ed) {
+        this.ed = _ed;
     }
 
-    createPrepared(type: TransactionType, accountData: AccountData, asset: T): SerializedTransaction<T> {
-        accountData.senderAddress = accountData.senderAddress
-            ? accountData.senderAddress
-            : getAddressByPublicKey(accountData.senderPublicKey);
+    create(
+        data: TransactionData,
+        sender: Account,
+        keyPair: IKeyPair,
+        secondKeyPair?: IKeyPair,
+    ): ResponseEntity<Transaction<any>> {
+        const errors = [];
 
-        const trs = new Transaction<T>({
-            createdAt: getTime(),
-            senderPublicKey: accountData.senderPublicKey,
-            senderAddress: accountData.senderAddress,
-            type,
-            salt: crypto.randomBytes(CONSTANTS.SALT_LENGTH).toString('hex')
-        });
-
-        const transactionService = TransactionAssetMap[type];
-        trs.asset = transactionService.create({ ...asset, createdAt: trs.createdAt });
-
-        const sender = new Account({ address: accountData.senderAddress, publicKey: accountData.senderPublicKey });
-        trs.fee = transactionService.calculateFee(trs as UITransaction, sender);
-
-        const keyPair = createKeyPairBySecret(accountData.secret);
-
-        const secondKeyPair = accountData.secondSecret ? createKeyPairBySecret(accountData.secondSecret) : undefined;
-
-        trs.signature = this.sign(keyPair, trs);
-        if (secondKeyPair) {
-            trs.secondSignature = this.secondSign(secondKeyPair, trs);
+        if (!TransactionType[data.type]) {
+            errors.push(`Unknown transaction type ${data.type}`);
+            return new ResponseEntity({ errors });
         }
 
-        trs.id = this.getId(trs);
+        const transaction: any = {
+            ...data,
+            senderAddress: getAddressByPublicKey(data.senderPublicKey),
+            fee: data.asset.calculateFee(sender),
+        };
+        transaction.signature = this.sign(keyPair, transaction);
+        if (secondKeyPair) {
+            transaction.secondSignature = this.sign(secondKeyPair, transaction);
+        }
 
-        return this.serialize(trs);
+        return new ResponseEntity({ data: new Transaction<any>(transaction) });
     }
 
-    serialize(trs: Transaction<T>): SerializedTransaction<T> {
-        const transactionService = TransactionAssetMap[trs.type];
-
-        return { ...trs, asset: transactionService.serialize(trs.asset) } as SerializedTransaction<T>;
-    }
-
-    getBytes(trs: Transaction<T>, skipSignature: boolean = false, skipSecondSignature: boolean = false): Buffer {
-        const transactionService = TransactionAssetMap[trs.type];
-        const assetBytes = transactionService.getBytes(trs);
+    getBytes(
+        trs: TransactionSchema<any>,
+        skipSignature: boolean = false,
+        skipSecondSignature: boolean = false,
+    ): Buffer {
+        const assetBytes = trs.asset.getBytes();
 
         const bytes = Buffer.alloc(TRANSACTION_BUFFER_SIZE);
         let offset = 0;
@@ -94,29 +89,17 @@ class TransactionService<T> {
             Buffer.from(trs.senderPublicKey, 'hex'),
             Buffer.from(!skipSignature && trs.signature ? trs.signature : '', 'hex'),
             Buffer.from(!skipSecondSignature && trs.secondSignature ? trs.secondSignature : '', 'hex'),
-            assetBytes
+            assetBytes,
         ]);
     }
 
-    getHash(trs: Transaction<T>): Buffer {
+    getHash(trs: TransactionSchema<any>): Buffer {
         return crypto.createHash('sha256').update(this.getBytes(trs)).digest();
     }
 
-    getId(trs: Transaction<T>): string {
-        return this.getHash(trs).toString('hex');
-    }
-
-    sign(keyPair: IKeyPair, trs: Transaction<T>): string {
-        return ed.sign(this.getHash(trs), keyPair).toString('hex');
-    }
-
-    secondSign(secondKeyPair: IKeyPair, trs: Transaction<T>): string {
-        return ed.sign(this.getHash(trs), secondKeyPair).toString('hex');
-    }
-
-    validate(type: TransactionType, account: Account, asset: any): Array<string> {
-        return TransactionAssetMap[type].validate(account, asset);
+    private sign(keyPair: IKeyPair, trs: TransactionSchema<any>): string {
+        return this.ed.sign(this.getHash(trs), keyPair).toString('hex');
     }
 }
 
-export default new TransactionService();
+export default new TransactionCreator(ed);

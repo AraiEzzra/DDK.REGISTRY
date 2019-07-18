@@ -3,7 +3,7 @@ import { Transaction } from './common/transaction';
 import { Asset } from './common/transaction/asset';
 import { clone } from '../util/clone';
 
-export type TBlock = {
+export type BlockSchema = {
     id: string;
     version: number;
     createdAt: Timestamp;
@@ -15,8 +15,8 @@ export type TBlock = {
     payloadHash: string;
     generatorPublicKey: string;
     signature: string;
-    relay: number;
     transactions: Array<Transaction<Asset>>;
+    relay?: number;
 };
 
 export class Block {
@@ -31,10 +31,10 @@ export class Block {
     payloadHash: string;
     generatorPublicKey: string;
     signature: string;
-    relay: number;
     transactions: Array<Transaction<Asset>>;
+    relay: number;
 
-    constructor(data: TBlock) {
+    constructor(data: BlockSchema) {
         this.id = data.id;
         this.version = data.version;
         this.createdAt = data.createdAt;
@@ -46,11 +46,14 @@ export class Block {
         this.payloadHash = data.payloadHash;
         this.generatorPublicKey = data.generatorPublicKey;
         this.signature = data.signature;
-        this.relay = data.relay;
         this.transactions = data.transactions;
+        this.relay = data.relay || 0;
     }
 
     public getCopy(): Block {
-        return new Block(clone(this));
+        return new Block({
+            ...clone(this),
+            transactions: this.transactions.map(transaction => transaction.getCopy()),
+        });
     }
 }

@@ -6,7 +6,7 @@ export interface IKeyPair {
     privateKey: Buffer;
 }
 
-class Ed {
+export class Ed {
 
     public makeKeyPair(hash: Buffer): IKeyPair {
         const keyPair: IKeyPair = {
