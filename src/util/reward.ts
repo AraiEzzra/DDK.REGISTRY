@@ -1,8 +1,6 @@
-import { Transaction } from '../model/common/transaction';
 import { Account } from '../model/common/account';
 import { TransactionType } from '../model/common/transaction/type';
-import { Address, AirdropReward } from '../model/common/type';
-import { AssetStake } from '../model/common/transaction/asset/stake';
+import { Address, AirdropReward, Timestamp } from '../model/common/type';
 import { AIRDROP, STAKE } from '../const';
 import { StakeSchema } from '../model/common/transaction/stake';
 
@@ -33,7 +31,7 @@ class StakeReward {
 const stakeReward = new StakeReward(STAKE.REWARDS.MILESTONES, STAKE.REWARDS.DISTANCE);
 
 export const calculateTotalRewardAndUnstake = (
-    trs: Transaction<AssetStake>,
+    createdAt: Timestamp,
     sender: Account,
     isDownVote: boolean,
     lastBlockHeight: number,
@@ -46,7 +44,7 @@ export const calculateTotalRewardAndUnstake = (
     }
 
     sender.stakes
-        .filter(stake => stake.isActive && trs.createdAt >= stake.nextVoteMilestone)
+        .filter(stake => stake.isActive && createdAt >= stake.nextVoteMilestone)
         .forEach((stake: StakeSchema) => {
             if (stake.voteCount > 0 && (stake.voteCount + 1) % STAKE.REWARD_VOTE_COUNT === 0) {
                 const stakeRewardPercent: number = stakeReward.calculateReward(lastBlockHeight);
@@ -60,7 +58,7 @@ export const calculateTotalRewardAndUnstake = (
     return { reward, unstake };
 };
 
-export const getAirdropReward = (
+export const calculateAirdropReward = (
     sender: Account,
     amount: number,
     transactionType: TransactionType,

@@ -12,7 +12,7 @@ export class AssetDelegate extends Asset {
     constructor(data: AssetDelegateSchema) {
         super();
 
-        this.username = data.username;
+        this.username = data.username.toLowerCase().trim();
     }
 
     getCopy(): AssetDelegate {
