@@ -7,8 +7,8 @@ import { FEES } from '../../../../const';
 export type AssetStakeSchema = {
     amount: number;
     startTime: number;
-    startVoteCount: number;
     airdropReward: AirdropReward;
+    startVoteCount?: number;
 };
 
 export class AssetStake extends Asset {
@@ -47,8 +47,8 @@ export class AssetStake extends Asset {
             BUFFER.LENGTH.INT64   // airdropReward.amount
         );
         offset = 0;
-        if (this.airdropReward && this.airdropReward.size > 0) {
-            for (const [sponsorAddress, reward] of this.airdropReward) {
+        if (this.airdropReward && this.airdropReward.sponsors.size > 0) {
+            for (const [sponsorAddress, reward] of this.airdropReward.sponsors) {
                 offset = BUFFER.writeUInt64LE(referralBuffer, sponsorAddress, offset);
                 BUFFER.writeUInt64LE(referralBuffer, reward, offset);
             }

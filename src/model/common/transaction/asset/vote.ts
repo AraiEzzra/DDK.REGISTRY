@@ -4,7 +4,7 @@ import { clone } from '../../../../util/clone';
 import BUFFER from '../../../../util/buffer';
 import { Account } from '../../account';
 import { StakeSchema } from '../stake';
-import { FEES } from '../../../../const';
+import { FEES, MAX_REFERRAL_COUNT } from '../../../../const';
 
 export type AssetVoteSchema = {
     votes: Array<string>;
@@ -13,8 +13,6 @@ export type AssetVoteSchema = {
     unstake: number;
     airdropReward: AirdropReward;
 };
-
-export const MAX_REFERRAL_COUNT = 15;
 
 export class AssetVote extends Asset {
     votes: Array<string>;
@@ -52,7 +50,7 @@ export class AssetVote extends Asset {
         );
 
         offset = 0;
-        for (const [sponsorAddress, reward] of this.airdropReward) {
+        for (const [sponsorAddress, reward] of this.airdropReward.sponsors) {
             offset = BUFFER.writeUInt64LE(sponsorsBuffer, sponsorAddress, offset);
             offset = BUFFER.writeUInt64LE(sponsorsBuffer, reward, offset);
         }
