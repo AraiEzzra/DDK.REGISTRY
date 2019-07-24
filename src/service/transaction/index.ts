@@ -2,32 +2,16 @@ import crypto from 'crypto';
 
 import { Transaction, TransactionSchema } from '../../model/common/transaction';
 import { IKeyPair, Ed, ed } from '../../util/ed';
-import { PublicKey, Timestamp, TransactionId, BlockId } from '../../model/common/type';
 import { TransactionType } from '../../model/common/transaction/type';
 import { ResponseEntity } from '../../model/responseEntity';
 import { getAddressByPublicKey } from '../../util/account';
 import BUFFER from '../../util/buffer';
 import { TRANSACTION_BUFFER_SIZE } from '../../util/transaction';
 import { Asset } from '../../model/common/transaction/asset';
-import { Account } from '../../model/common/account';
-
-export type TransactionData = {
-    senderPublicKey: PublicKey;
-    type: TransactionType;
-    createdAt: Timestamp;
-    asset: Asset;
-    salt?: string;
-    id?: TransactionId;
-    blockId?: BlockId;
-};
+import { TransactionCreationData } from '../../model/common/type';
 
 export interface ITransactionCreator {
-    create(
-        data: TransactionData,
-        sender: Account,
-        keyPair: IKeyPair,
-        secondKeyPair?: IKeyPair,
-    ): ResponseEntity<Transaction<any>>;
+    create(params: TransactionCreationData): ResponseEntity<Transaction<any>>;
 
     getBytes(
         trs: TransactionSchema<Asset>,
@@ -45,12 +29,8 @@ export class TransactionCreator implements ITransactionCreator {
         this.ed = _ed;
     }
 
-    create(
-        data: TransactionData,
-        sender: Account,
-        keyPair: IKeyPair,
-        secondKeyPair?: IKeyPair,
-    ): ResponseEntity<Transaction<any>> {
+    create(params: TransactionCreationData): ResponseEntity<Transaction<any>> {
+        const { data, sender, keyPair, secondKeyPair } = params;
         const errors = [];
 
         if (!TransactionType[data.type]) {

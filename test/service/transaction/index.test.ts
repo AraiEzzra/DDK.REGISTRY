@@ -20,14 +20,18 @@ describe('Transaction creator service', () => {
     it('Create referral transaction', () => {
         const keyPair = createKeyPairBySecret('hen worry two thank unfair salmon smile oven gospel grab latin reason');
         const transactionResponse = transactionCreator.create({
-            createdAt: 110639834,
-            salt: '894cdfa99bc38ca098d38d305c811496',
-            senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
-            type: TransactionType.REFERRAL,
-            asset: new AssetReferral({
-                referral: BigInt('4957046151241062485'),
-            }),
-        }, undefined, keyPair);
+            data: {
+                createdAt: 110639834,
+                salt: '894cdfa99bc38ca098d38d305c811496',
+                senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
+                type: TransactionType.REFERRAL,
+                asset: new AssetReferral({
+                    referral: BigInt('4957046151241062485'),
+                }),
+            },
+            sender: undefined,
+            keyPair,
+        });
 
         const expected: TransactionSchema<AssetReferral> = {
             id: '4e1b074986ed1704d44c4af38d8cb1d95e5fe1dca67c91e1b5766270fbd37bf7',
@@ -57,15 +61,19 @@ describe('Transaction creator service', () => {
     it('Create send transaction', () => {
         const keyPair = createKeyPairBySecret('hen worry two thank unfair salmon smile oven gospel grab latin reason');
         const transactionResponse = transactionCreator.create({
-            createdAt: 110639834,
-            salt: '894cdfa99bc38ca098d38d305c811496',
-            senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
-            type: TransactionType.SEND,
-            asset: new AssetSend({
-                amount: 10000000000,
-                recipientAddress: BigInt('4957046151241062485'),
-            }),
-        }, undefined, keyPair);
+            data: {
+                createdAt: 110639834,
+                salt: '894cdfa99bc38ca098d38d305c811496',
+                senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
+                type: TransactionType.SEND,
+                asset: new AssetSend({
+                    amount: 10000000000,
+                    recipientAddress: BigInt('4957046151241062485'),
+                }),
+            },
+            sender: undefined,
+            keyPair,
+        });
 
         const expected: TransactionSchema<AssetSend> = {
             id: '0b8fedd45e0cc1d2ef522b9ec04aaa912f3c963898d2a5ee5f9d7d4bb5755ab0',
@@ -96,14 +104,18 @@ describe('Transaction creator service', () => {
     it('Create signature transaction', () => {
         const keyPair = createKeyPairBySecret('hen worry two thank unfair salmon smile oven gospel grab latin reason');
         const transactionResponse = transactionCreator.create({
-            createdAt: 110639834,
-            salt: '894cdfa99bc38ca098d38d305c811496',
-            senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
-            type: TransactionType.SIGNATURE,
-            asset: new AssetSignature({
-                publicKey: '1aa981869d400a578c11c6dd0d65fa89a21557db44e5d876dcd0cc461db1bfd2',
-            }),
-        }, undefined, keyPair);
+            data: {
+                createdAt: 110639834,
+                salt: '894cdfa99bc38ca098d38d305c811496',
+                senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
+                type: TransactionType.SIGNATURE,
+                asset: new AssetSignature({
+                    publicKey: '1aa981869d400a578c11c6dd0d65fa89a21557db44e5d876dcd0cc461db1bfd2',
+                }),
+            },
+            sender: undefined,
+            keyPair,
+        });
 
         const expected: TransactionSchema<AssetSignature> = {
             id: 'aa56f87d3d0202b374c6ea519752183f02526491b9c82ff7669507bb73c5da86',
@@ -133,14 +145,18 @@ describe('Transaction creator service', () => {
     it('Create delegate transaction', () => {
         const keyPair = createKeyPairBySecret('hen worry two thank unfair salmon smile oven gospel grab latin reason');
         const transactionResponse = transactionCreator.create({
-            createdAt: 110639834,
-            salt: '894cdfa99bc38ca098d38d305c811496',
-            senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
-            type: TransactionType.DELEGATE,
-            asset: new AssetDelegate({
-                username: 'DDK',
-            }),
-        }, undefined, keyPair);
+            data: {
+                createdAt: 110639834,
+                salt: '894cdfa99bc38ca098d38d305c811496',
+                senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
+                type: TransactionType.DELEGATE,
+                asset: new AssetDelegate({
+                    username: 'DDK',
+                }),
+            },
+            sender: undefined,
+            keyPair,
+        });
 
         const expected: TransactionSchema<AssetDelegate> = {
             id: '3aeeb5092c72bf86930e750ecdc04d914d2942e6c73389ff47bb891caa79b423',
@@ -230,15 +246,19 @@ describe('Transaction creator service', () => {
         });
 
         const transactionResponse = transactionCreator.create({
-            createdAt: 111796273,
-            salt: '1fbe58f85bbb7b111855769bc48e9c49',
-            senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
-            type: TransactionType.STAKE,
-            asset: createAssetStake({
+            data: {
                 createdAt: 111796273,
-                amount: 100000000,
-            }, sender, 1000000000000),
-        }, sender, keyPair);
+                salt: '1fbe58f85bbb7b111855769bc48e9c49',
+                senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
+                type: TransactionType.STAKE,
+                asset: createAssetStake({
+                    createdAt: 111796273,
+                    amount: 100000000,
+                }, sender, 1000000000000),
+            },
+            sender,
+            keyPair,
+        });
 
         const expected: TransactionSchema<AssetStake> = {
             id: '9711a82f0ed4ea09fdb288194266df46818b5aec15d35ec1ce82d0610578416e',
@@ -334,20 +354,24 @@ describe('Transaction creator service', () => {
         });
 
         const transactionResponse = transactionCreator.create({
-            createdAt: 111796273,
-            salt: '1fbe58f85bbb7b111855769bc48e9c49',
-            senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
-            type: TransactionType.VOTE,
-            asset: createAssetVote({
+            data: {
                 createdAt: 111796273,
-                votes: [
-                    '+137b9f0f839ab3ecd2146bfecd64d31e127d79431211e352bedfeba5fd61a57a',
-                    '+83cb3d8641c8e73735cc1b70c915602ffcb6e5a68f14a71056511699050a1a05',
-                    '+f959e6c8d279c97d3ec5ba993f04ab740a6e50bec4aad75a8a1e7808a6c5eec7',
-                ],
-                type: VoteType.VOTE,
-            }, sender, 1, 1000000000000),
-        }, sender, keyPair);
+                salt: '1fbe58f85bbb7b111855769bc48e9c49',
+                senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
+                type: TransactionType.VOTE,
+                asset: createAssetVote({
+                    createdAt: 111796273,
+                    votes: [
+                        '+137b9f0f839ab3ecd2146bfecd64d31e127d79431211e352bedfeba5fd61a57a',
+                        '+83cb3d8641c8e73735cc1b70c915602ffcb6e5a68f14a71056511699050a1a05',
+                        '+f959e6c8d279c97d3ec5ba993f04ab740a6e50bec4aad75a8a1e7808a6c5eec7',
+                    ],
+                    type: VoteType.VOTE,
+                }, sender, 1, 1000000000000),
+            },
+            sender,
+            keyPair,
+        });
 
         const expected: TransactionSchema<AssetVote> = {
             id: '06c3eb045b73eebdeab985b3410a8bb44453d2b07d89a97e33ab24915cd43c32',
