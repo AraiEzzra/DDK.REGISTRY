@@ -10,7 +10,7 @@ export declare const FEES: {
     SEND_STAKE: number;
 };
 export declare const AIRDROP: {
-    ADDRESS: bigint;
+    ADDRESS: string;
     STAKE_REWARD_PERCENT: number;
     REFERRAL_PERCENT_PER_LEVEL: number[];
 };
