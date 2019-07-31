@@ -33,3 +33,8 @@ export declare type TransactionCreationData = {
     secondSecret?: string;
 };
 export declare type EpochTime = number;
+export declare enum LENGTH {
+    PUBLIC_KEY = 32,
+    ID = 32,
+    SIGNATURE = 64
+}

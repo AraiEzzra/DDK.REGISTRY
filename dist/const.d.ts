@@ -28,3 +28,6 @@ export declare const SALT_LENGTH = 16;
 export declare const EPOCH_TIME = 1451667600000;
 export declare const SLOT_INTERVAL = 10;
 export declare const MAX_VOTES_PER_TRANSACTION = 3;
+export declare const MIN_LIMIT = 1;
+export declare const MAX_LIMIT = 100;
+export declare const MIN_OFFSET = 0;
