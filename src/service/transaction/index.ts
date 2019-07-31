@@ -3,12 +3,14 @@ import crypto from 'crypto';
 import { Transaction, TransactionSchema } from '../../model/common/transaction';
 import { IKeyPair, Ed, ed } from '../../util/ed';
 import { TransactionType } from '../../model/common/transaction/type';
-import { ResponseEntity } from '../../model/responseEntity';
+import { ResponseEntity } from '../../model/common/responseEntity';
 import { getAddressByPublicKey } from '../../util/account';
 import BUFFER from '../../util/buffer';
 import { TRANSACTION_BUFFER_SIZE } from '../../util/transaction';
 import { Asset } from '../../model/common/transaction/asset';
 import { TransactionCreationData } from '../../model/common/type';
+import { SALT_LENGTH } from '../../const';
+import { createKeyPairBySecret } from '../../util/crypto';
 
 export interface ITransactionCreator {
     create(params: TransactionCreationData): ResponseEntity<Transaction<any>>;
@@ -30,7 +32,8 @@ export class TransactionCreator implements ITransactionCreator {
     }
 
     create(params: TransactionCreationData): ResponseEntity<Transaction<any>> {
-        const { data, sender, keyPair, secondKeyPair } = params;
+        const { data, sender, secret, secondSecret } = params;
+        const keyPair = createKeyPairBySecret(secret);
         const errors = [];
 
         if (!TransactionType[data.type]) {
@@ -38,13 +41,17 @@ export class TransactionCreator implements ITransactionCreator {
             return new ResponseEntity({ errors });
         }
 
+        const senderPublicKey = crypto
+            .createHash('sha256').update(keyPair.publicKey).digest('hex');
         const transaction: any = {
             ...data,
-            senderAddress: getAddressByPublicKey(data.senderPublicKey),
+            senderAddress: getAddressByPublicKey(senderPublicKey),
             fee: data.asset.calculateFee(sender),
+            salt: crypto.randomBytes(SALT_LENGTH).toString('hex'),
         };
         transaction.signature = this.sign(keyPair, transaction);
-        if (secondKeyPair) {
+        if (secondSecret) {
+            const secondKeyPair = createKeyPairBySecret(secondSecret);
             transaction.secondSignature = this.sign(secondKeyPair, transaction);
         }
         transaction.id = this.getId(transaction);
@@ -88,4 +95,4 @@ export class TransactionCreator implements ITransactionCreator {
     }
 }
 
-export default new TransactionCreator(ed);
+export const transactionCreator = new TransactionCreator(ed);
