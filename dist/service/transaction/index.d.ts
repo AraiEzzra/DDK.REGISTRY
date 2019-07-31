@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import { Transaction, TransactionSchema } from '../../model/common/transaction';
 import { Ed } from '../../util/ed';
-import { ResponseEntity } from '../../model/responseEntity';
+import { ResponseEntity } from '../../model/common/responseEntity';
 import { Asset } from '../../model/common/transaction/asset';
 import { TransactionCreationData } from '../../model/common/type';
 export interface ITransactionCreator {
@@ -18,5 +18,4 @@ export declare class TransactionCreator implements ITransactionCreator {
     getId(trs: TransactionSchema<any>): string;
     private sign;
 }
-declare const _default: TransactionCreator;
-export default _default;
+export declare const transactionCreator: TransactionCreator;
