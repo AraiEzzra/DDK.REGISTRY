@@ -11,6 +11,7 @@ import { Asset } from '../../model/common/transaction/asset';
 import { TransactionCreationData } from '../../model/common/type';
 import { SALT_LENGTH } from '../../const';
 import { createKeyPairBySecret } from '../../util/crypto';
+import { slotService } from '../slot';
 
 export interface ITransactionCreator {
     create(params: TransactionCreationData): ResponseEntity<Transaction<any>>;
@@ -41,14 +42,19 @@ export class TransactionCreator implements ITransactionCreator {
             return new ResponseEntity({ errors });
         }
 
-        const senderPublicKey = crypto
-            .createHash('sha256').update(keyPair.publicKey).digest('hex');
+        const senderPublicKey = keyPair.publicKey.toString('hex');
         const transaction: any = {
             ...data,
+            senderPublicKey,
             senderAddress: getAddressByPublicKey(senderPublicKey),
             fee: data.asset.calculateFee(sender),
-            salt: crypto.randomBytes(SALT_LENGTH).toString('hex'),
         };
+        if (!transaction.salt) {
+            transaction.salt = crypto.randomBytes(SALT_LENGTH).toString('hex');
+        }
+        if (!transaction.createdAt) {
+            transaction.createdAt = slotService.getTime();
+        }
         transaction.signature = this.sign(keyPair, transaction);
         if (secondSecret) {
             const secondKeyPair = createKeyPairBySecret(secondSecret);

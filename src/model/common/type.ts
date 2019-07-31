@@ -21,13 +21,14 @@ export type TransactionData = {
     type: TransactionType;
     asset: Asset;
     createdAt?: Timestamp;
+    salt?: string;
 };
 
 export type TransactionCreationData = {
     data: TransactionData,
     sender: Account,
     secret: string,
-    secondSecret: string,
+    secondSecret?: string,
 };
 
 export type EpochTime = number;
