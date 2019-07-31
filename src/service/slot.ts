@@ -1,9 +1,7 @@
-import { Timestamp } from '../model/common/type';
-import { SECOND } from '../const';
+import { Timestamp, EpochTime } from '../model/common/type';
+import { SECOND, EPOCH_TIME, SLOT_INTERVAL } from '../const';
 
-export type EpochTime = number;
-
-export default class SlotService {
+export class SlotService {
     private epochTime: Date;
     private slotInterval: number;
 
@@ -49,3 +47,5 @@ export default class SlotService {
             this.slotInterval;
     }
 }
+
+export const slotService = new SlotService(EPOCH_TIME, SLOT_INTERVAL);

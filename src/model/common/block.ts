@@ -1,7 +1,7 @@
-import { Timestamp } from './common/type';
-import { Transaction } from './common/transaction';
-import { Asset } from './common/transaction/asset';
-import { clone } from '../util/clone';
+import { Timestamp } from './type';
+import { Transaction } from './transaction';
+import { Asset } from './transaction/asset';
+import { clone } from '../../util/clone';
 
 export type BlockSchema = {
     id: string;

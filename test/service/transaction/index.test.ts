@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import transactionCreator from '../../../src/service/transaction';
+import { transactionCreator } from '../../../src/service/transaction';
 import { createAssetVote } from '../../../src/service/transaction/vote';
 import { createAssetStake } from '../../../src/service/transaction/stake';
 import { TransactionType } from '../../../src/model/common/transaction/type';
@@ -9,7 +9,6 @@ import { AssetVote } from '../../../src/model/common/transaction/asset/vote';
 import { AssetReferral } from '../../../src/model/common/transaction/asset/referral';
 import { AssetDelegate } from '../../../src/model/common/transaction/asset/delegate';
 import { AssetSignature } from '../../../src/model/common/transaction/asset/signature';
-import { createKeyPairBySecret } from '../../../src/util/crypto';
 import { TransactionSchema } from '../../../src/model/common/transaction';
 import { TransactionStatus } from '../../../src/model/common/transaction/status';
 import { VoteType, Address } from '../../../src/model/common/type';
@@ -18,19 +17,18 @@ import { AssetStake } from '../../../src/model/common/transaction/asset/stake';
 
 describe('Transaction creator service', () => {
     it('Create referral transaction', () => {
-        const keyPair = createKeyPairBySecret('hen worry two thank unfair salmon smile oven gospel grab latin reason');
+        const secret = 'hen worry two thank unfair salmon smile oven gospel grab latin reason';
         const transactionResponse = transactionCreator.create({
             data: {
                 createdAt: 110639834,
                 salt: '894cdfa99bc38ca098d38d305c811496',
-                senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
                 type: TransactionType.REFERRAL,
                 asset: new AssetReferral({
                     referral: BigInt('4957046151241062485'),
                 }),
             },
             sender: undefined,
-            keyPair,
+            secret,
         });
 
         const expected: TransactionSchema<AssetReferral> = {
@@ -59,12 +57,11 @@ describe('Transaction creator service', () => {
     });
 
     it('Create send transaction', () => {
-        const keyPair = createKeyPairBySecret('hen worry two thank unfair salmon smile oven gospel grab latin reason');
+        const secret = 'hen worry two thank unfair salmon smile oven gospel grab latin reason';
         const transactionResponse = transactionCreator.create({
             data: {
                 createdAt: 110639834,
                 salt: '894cdfa99bc38ca098d38d305c811496',
-                senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
                 type: TransactionType.SEND,
                 asset: new AssetSend({
                     amount: 10000000000,
@@ -72,7 +69,7 @@ describe('Transaction creator service', () => {
                 }),
             },
             sender: undefined,
-            keyPair,
+            secret,
         });
 
         const expected: TransactionSchema<AssetSend> = {
@@ -102,19 +99,18 @@ describe('Transaction creator service', () => {
     });
 
     it('Create signature transaction', () => {
-        const keyPair = createKeyPairBySecret('hen worry two thank unfair salmon smile oven gospel grab latin reason');
+        const secret = 'hen worry two thank unfair salmon smile oven gospel grab latin reason';
         const transactionResponse = transactionCreator.create({
             data: {
                 createdAt: 110639834,
                 salt: '894cdfa99bc38ca098d38d305c811496',
-                senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
                 type: TransactionType.SIGNATURE,
                 asset: new AssetSignature({
                     publicKey: '1aa981869d400a578c11c6dd0d65fa89a21557db44e5d876dcd0cc461db1bfd2',
                 }),
             },
             sender: undefined,
-            keyPair,
+            secret,
         });
 
         const expected: TransactionSchema<AssetSignature> = {
@@ -143,19 +139,18 @@ describe('Transaction creator service', () => {
     });
 
     it('Create delegate transaction', () => {
-        const keyPair = createKeyPairBySecret('hen worry two thank unfair salmon smile oven gospel grab latin reason');
+        const secret = 'hen worry two thank unfair salmon smile oven gospel grab latin reason';
         const transactionResponse = transactionCreator.create({
             data: {
                 createdAt: 110639834,
                 salt: '894cdfa99bc38ca098d38d305c811496',
-                senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
                 type: TransactionType.DELEGATE,
                 asset: new AssetDelegate({
                     username: 'DDK',
                 }),
             },
             sender: undefined,
-            keyPair,
+            secret,
         });
 
         const expected: TransactionSchema<AssetDelegate> = {
@@ -184,7 +179,7 @@ describe('Transaction creator service', () => {
     });
 
     it('Create stake transaction', () => {
-        const keyPair = createKeyPairBySecret('hen worry two thank unfair salmon smile oven gospel grab latin reason');
+        const secret = 'hen worry two thank unfair salmon smile oven gospel grab latin reason';
         const sender = new Account({
             actualBalance: 4112952030480000,
             publicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
@@ -249,7 +244,6 @@ describe('Transaction creator service', () => {
             data: {
                 createdAt: 111796273,
                 salt: '1fbe58f85bbb7b111855769bc48e9c49',
-                senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
                 type: TransactionType.STAKE,
                 asset: createAssetStake({
                     createdAt: 111796273,
@@ -257,7 +251,7 @@ describe('Transaction creator service', () => {
                 }, sender, 1000000000000),
             },
             sender,
-            keyPair,
+            secret,
         });
 
         const expected: TransactionSchema<AssetStake> = {
@@ -292,7 +286,7 @@ describe('Transaction creator service', () => {
     });
 
     it('Create vote transaction', () => {
-        const keyPair = createKeyPairBySecret('hen worry two thank unfair salmon smile oven gospel grab latin reason');
+        const secret = 'hen worry two thank unfair salmon smile oven gospel grab latin reason';
         const sender = new Account({
             actualBalance: 4112952030480000,
             publicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
@@ -357,7 +351,6 @@ describe('Transaction creator service', () => {
             data: {
                 createdAt: 111796273,
                 salt: '1fbe58f85bbb7b111855769bc48e9c49',
-                senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
                 type: TransactionType.VOTE,
                 asset: createAssetVote({
                     createdAt: 111796273,
@@ -370,7 +363,7 @@ describe('Transaction creator service', () => {
                 }, sender, 1, 1000000000000),
             },
             sender,
-            keyPair,
+            secret,
         });
 
         const expected: TransactionSchema<AssetVote> = {
