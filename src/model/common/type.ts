@@ -32,3 +32,9 @@ export type TransactionCreationData = {
 };
 
 export type EpochTime = number;
+
+export enum LENGTH {
+    PUBLIC_KEY = 32,
+    ID = 32,
+    SIGNATURE = 64,
+}
