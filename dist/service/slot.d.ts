@@ -1,6 +1,5 @@
-import { Timestamp } from '../model/common/type';
-export declare type EpochTime = number;
-export default class SlotService {
+import { Timestamp, EpochTime } from '../model/common/type';
+export declare class SlotService {
     private epochTime;
     private slotInterval;
     constructor(epochTime: number, slotInterval: number);
@@ -13,3 +12,4 @@ export default class SlotService {
     getSlotRealTime(slot: number): number;
     getTruncTime(): Timestamp;
 }
+export declare const slotService: SlotService;

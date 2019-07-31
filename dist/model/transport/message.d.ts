@@ -1,16 +1,27 @@
-import { API_ACTION_TYPES } from './code';
-import { EVENT_TYPES } from './event';
 export declare enum MessageType {
     REQUEST = 1,
     RESPONSE = 2,
     EVENT = 3
 }
-export declare class Message<Body> {
-    code: EVENT_TYPES | API_ACTION_TYPES;
+export declare type MessageSchema<Body, Code> = {
+    code: Code;
     headers: {
         id: string;
         type: MessageType;
     };
     body: Body;
-    constructor(type: MessageType, code: EVENT_TYPES | API_ACTION_TYPES, body: any, id?: string);
+};
+export default class Message<Body, Code> implements MessageSchema<Body, Code> {
+    code: Code;
+    headers: {
+        id: string;
+        type: MessageType;
+    };
+    body: Body;
+    constructor(type: MessageType, code: Code, body: Body, id?: string);
+    getId: () => string;
+    getBody: () => Body;
+    getCode: () => Code;
+    serialize: () => MessageSchema<Body, Code>;
+    static deserialize: (message: MessageSchema<any, any>) => Message<any, any>;
 }

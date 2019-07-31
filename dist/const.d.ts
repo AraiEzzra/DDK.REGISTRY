@@ -24,3 +24,7 @@ export declare const STAKE: {
     UNSTAKE_VOTE_COUNT: number;
 };
 export declare const MAX_REFERRAL_COUNT = 15;
+export declare const SALT_LENGTH = 16;
+export declare const EPOCH_TIME = 1451667600000;
+export declare const SLOT_INTERVAL = 10;
+export declare const MAX_VOTES_PER_TRANSACTION = 3;
