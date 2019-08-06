@@ -5,13 +5,13 @@ import { RawAsset } from '../../../../model/common/type';
 class AssetReferralSerializer implements IAssetSerializer<AssetReferral> {
     serialize(asset: AssetReferral): RawAsset {
         return {
-            referral: asset.referral,
+            referral: asset.referral.toString(),
         };
     }
 
     deserialize(rawAsset: RawAsset): AssetReferral {
         return new AssetReferral({
-            referral: rawAsset.referral,
+            referral: BigInt(rawAsset.referral),
         });
     }
 }
