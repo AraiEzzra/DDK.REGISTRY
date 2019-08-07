@@ -1,3 +1,5 @@
+import { RawAsset, Timestamp, PublicKey } from '../type';
+
 export enum TransactionType {
     REFERRAL = 0,
     SEND = 10,
@@ -7,3 +9,19 @@ export enum TransactionType {
     SENDSTAKE = 50,
     VOTE = 60,
 }
+
+export type SerializedTransaction = {
+    id: string;
+    blockId: string;
+    type: TransactionType;
+    createdAt: Timestamp;
+    senderPublicKey: PublicKey;
+    senderAddress: string;
+    signature: string;
+    secondSignature: string;
+    fee: number;
+    salt: string;
+    relay: number;
+    confirmations: number,
+    asset: RawAsset;
+};
