@@ -1,8 +1,8 @@
 import { Account } from '../../model/common/account';
-import { calculateAirdropReward } from '../../util/reward';
 import { Timestamp } from '../../model/common/type';
 import { TransactionType } from '../../model/common/transaction/type';
 import { AssetStake } from '../../model/common/transaction/asset/stake';
+import DDK from '../..';
 
 export type StakeData = {
     createdAt: Timestamp;
@@ -15,7 +15,7 @@ export const createAssetStake = (
     sender: Account,
     availableAirdropBalance: number,
 ): AssetStake => {
-    const airdropReward = calculateAirdropReward(
+    const airdropReward = DDK.rewardCalculator.calculateAirdropReward(
         sender,
         data.amount,
         TransactionType.STAKE,

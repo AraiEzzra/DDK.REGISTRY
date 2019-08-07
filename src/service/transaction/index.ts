@@ -9,9 +9,9 @@ import BUFFER from '../../util/buffer';
 import { TRANSACTION_BUFFER_SIZE } from '../../util/transaction';
 import { Asset } from '../../model/common/transaction/asset';
 import { TransactionCreationData } from '../../model/common/type';
-import { SALT_LENGTH } from '../../const';
 import { createKeyPairBySecret } from '../../util/crypto';
 import { slotService } from '../slot';
+import { CONFIG_DEFAULT } from '../../config';
 
 export interface ITransactionCreator {
     create(params: TransactionCreationData): ResponseEntity<Transaction<any>>;
@@ -50,7 +50,7 @@ export class TransactionCreator implements ITransactionCreator {
             fee: data.asset.calculateFee(sender),
         };
         if (!transaction.salt) {
-            transaction.salt = crypto.randomBytes(SALT_LENGTH).toString('hex');
+            transaction.salt = crypto.randomBytes(CONFIG_DEFAULT.SALT_LENGTH).toString('hex');
         }
         if (!transaction.createdAt) {
             transaction.createdAt = slotService.getTime();

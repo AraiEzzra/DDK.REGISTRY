@@ -1,7 +1,7 @@
 import { Asset } from '.';
 import { PublicKey } from '../../type';
 import { clone } from '../../../../util/clone';
-import { FEES } from '../../../../const';
+import { CONFIG_DEFAULT } from '../../../../config';
 
 export type AssetSignatureSchema = {
     publicKey: PublicKey;
@@ -25,6 +25,6 @@ export class AssetSignature extends Asset {
     }
 
     calculateFee(): number {
-        return FEES.SIGNATURE;
+        return CONFIG_DEFAULT.FEES.SIGNATURE;
     }
 }

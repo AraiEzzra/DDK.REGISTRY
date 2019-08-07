@@ -1,8 +1,8 @@
 import { Address } from '../../type';
 import { Asset } from '.';
-import { FEES } from '../../../../const';
 import { clone } from '../../../../util/clone';
 import BUFFER from '../../../../util/buffer';
+import { CONFIG_DEFAULT } from '../../../../config';
 
 export type AssetSendSchema = {
     recipientAddress: Address;
@@ -35,6 +35,6 @@ export class AssetSend extends Asset {
     }
 
     calculateFee(): number {
-        return this.amount * FEES.SEND;
+        return this.amount * CONFIG_DEFAULT.FEES.SEND;
     }
 }
