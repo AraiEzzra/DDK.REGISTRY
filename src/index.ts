@@ -17,7 +17,7 @@ export class DDKRegistry {
 
     initialize(workspace: WORKSPACE = WORKSPACE.MAINNET) {
         this._config = getConfig(workspace);
-        this._rewardCalculator = initRewardCalculator(workspace);
+        this._rewardCalculator = initRewardCalculator(this._config);
     }
 }
 

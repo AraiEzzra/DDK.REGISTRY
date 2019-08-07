@@ -2,7 +2,7 @@ import { Account } from '../model/common/account';
 import { TransactionType } from '../model/common/transaction/type';
 import { Address, AirdropReward, Timestamp, StakeReward, VoteType } from '../model/common/type';
 import { StakeSchema } from '../model/common/transaction/stake';
-import { WORKSPACE, getConfig } from '../config';
+import { ConfigSchema } from '../config';
 
 export interface IStakeRewardPercentCalculator {
     calculatePercent(height: number): number;
@@ -135,9 +135,7 @@ export class RewardCalculator implements IRewardCalculator {
     }
 }
 
-export const initRewardCalculator = (workspace: WORKSPACE): IRewardCalculator => {
-    const config = getConfig(workspace);
-
+export const initRewardCalculator = (config: ConfigSchema): IRewardCalculator => {
     return new RewardCalculator(
         config.STAKE.REWARD_VOTE_COUNT,
         config.STAKE.UNSTAKE_VOTE_COUNT,

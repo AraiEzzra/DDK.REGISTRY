@@ -54,7 +54,7 @@ export const CONFIG_DEFAULT = {
     },
 };
 
-export const getConfig = (workspace: WORKSPACE) => {
+export const getConfig = (workspace: WORKSPACE): ConfigSchema => {
     switch (workspace) {
         case WORKSPACE.DEVELOPMENT:
             return { ...CONFIG_DEFAULT, ...CONFIG_DEVELOPMENT };
