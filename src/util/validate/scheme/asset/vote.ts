@@ -1,6 +1,6 @@
 import { TransactionType } from '../../../../model/common/transaction/type';
 import { VoteType } from '../../../../model/common/type';
-import { MAX_VOTES_PER_TRANSACTION } from '../../../../const';
+import { CONFIG_DEFAULT } from '../../../../config';
 
 export const ASSET_VOTE = {
     id: `ASSET.${TransactionType.VOTE}`,
@@ -12,7 +12,7 @@ export const ASSET_VOTE = {
                 type: 'string',
                 format: 'publicKey',
             },
-            maxItems: MAX_VOTES_PER_TRANSACTION,
+            maxItems: CONFIG_DEFAULT.MAX_VOTES_PER_TRANSACTION,
         },
         type: {
             type: 'string',
