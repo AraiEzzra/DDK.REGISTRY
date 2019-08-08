@@ -1,7 +1,7 @@
 import { Account } from './account';
 import { TransactionType } from './transaction/type';
 import { Asset } from './transaction/asset';
-export declare type SerializedAccount = object;
+import { StakeSchema } from './transaction/stake';
 export declare type TransactionId = string;
 export declare type BlockId = string;
 export declare type RawTransaction = {
@@ -19,6 +19,12 @@ export declare type AirdropReward = {
 export declare type StakeReward = {
     reward: number;
     unstake: number;
+};
+export declare type Direction = 'ASC' | 'DESC';
+export declare type Sort = [string, Direction];
+export declare type Pagination = {
+    limit: number;
+    offset: number;
 };
 export declare enum VoteType {
     VOTE = "+",
@@ -42,3 +48,31 @@ export declare enum LENGTH {
     ID = 32,
     SIGNATURE = 64
 }
+export declare type SerializedDelegate = {
+    username: string;
+    missedBlocks: number;
+    forgedBlocks: number;
+    publicKey: PublicKey;
+    votes: number;
+    confirmedVoteCount: number;
+    approval: number;
+};
+export declare type SerializedAccount = {
+    address: string;
+    isDelegate: boolean;
+    publicKey: PublicKey;
+    secondPublicKey: PublicKey;
+    actualBalance: number;
+    referrals: Array<string>;
+    votes: Array<SerializedDelegate> | Array<string>;
+    stakes: Array<StakeSchema>;
+};
+export declare type BlockchainInfoSchema = {
+    airdropBalance: number;
+    totalSupply: number;
+    circulatingSupply: number;
+    tokenHolders: number;
+    totalStakeAmount: number;
+    totalStakeHolders: number;
+    transactionsCount: number;
+};
