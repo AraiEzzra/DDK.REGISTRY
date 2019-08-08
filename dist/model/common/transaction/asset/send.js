@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const _1 = require(".");
-const const_1 = require("../../../../const");
 const clone_1 = require("../../../../util/clone");
 const buffer_1 = __importDefault(require("../../../../util/buffer"));
+const config_1 = require("../../../../config");
 class AssetSend extends _1.Asset {
     constructor(data) {
         super();
@@ -25,7 +25,7 @@ class AssetSend extends _1.Asset {
         return buff;
     }
     calculateFee() {
-        return this.amount * const_1.FEES.SEND;
+        return this.amount * config_1.CONFIG_DEFAULT.FEES.SEND;
     }
 }
 exports.AssetSend = AssetSend;

@@ -10,7 +10,9 @@ export type RawAsset = { [key: string]: any };
 export type Address = BigInt;
 export type PublicKey = string;
 export type Timestamp = number;
+
 export type AirdropReward = { sponsors: Map<Address, number> };
+export type StakeReward = { reward: number, unstake: number };
 
 export enum VoteType {
     VOTE = '+',

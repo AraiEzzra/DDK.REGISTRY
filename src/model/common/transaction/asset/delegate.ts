@@ -1,6 +1,6 @@
 import { Asset } from '.';
 import { clone } from '../../../../util/clone';
-import { FEES } from '../../../../const';
+import { CONFIG_DEFAULT } from '../../../../config';
 
 export type AssetDelegateSchema = {
     username: string;
@@ -24,6 +24,6 @@ export class AssetDelegate extends Asset {
     }
 
     calculateFee(): number {
-        return FEES.DELEGATE;
+        return CONFIG_DEFAULT.FEES.DELEGATE;
     }
 }

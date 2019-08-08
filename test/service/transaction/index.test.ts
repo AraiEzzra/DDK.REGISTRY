@@ -14,8 +14,13 @@ import { TransactionStatus } from '../../../src/model/common/transaction/status'
 import { VoteType, Address } from '../../../src/model/common/type';
 import { Account } from '../../../src/model/common/account';
 import { AssetStake } from '../../../src/model/common/transaction/asset/stake';
+import DDK, { WORKSPACE } from '../../../src';
 
 describe('Transaction creator service', () => {
+    beforeEach(() => {
+        DDK.initialize(WORKSPACE.MAINNET);
+    });
+
     it('Create referral transaction', () => {
         const secret = 'hen worry two thank unfair salmon smile oven gospel grab latin reason';
         const transactionResponse = transactionCreator.create({
@@ -51,9 +56,8 @@ describe('Transaction creator service', () => {
             status: TransactionStatus.CREATED,
         };
 
-        expect(transactionResponse.success).to.equal(true);
-        expect(transactionResponse.data).to.deep.equal(expected);
-
+        expect(true).to.equal(transactionResponse.success);
+        expect(expected).to.deep.equal(transactionResponse.data);
     });
 
     it('Create send transaction', () => {
@@ -93,9 +97,8 @@ describe('Transaction creator service', () => {
             status: TransactionStatus.CREATED,
         };
 
-        expect(transactionResponse.success).to.equal(true);
-        expect(transactionResponse.data).to.deep.equal(expected);
-
+        expect(true).to.equal(transactionResponse.success);
+        expect(expected).to.deep.equal(transactionResponse.data);
     });
 
     it('Create signature transaction', () => {
@@ -133,9 +136,8 @@ describe('Transaction creator service', () => {
             status: TransactionStatus.CREATED,
         };
 
-        expect(transactionResponse.success).to.equal(true);
-        expect(transactionResponse.data).to.deep.equal(expected);
-
+        expect(true).to.equal(transactionResponse.success);
+        expect(expected).to.deep.equal(transactionResponse.data);
     });
 
     it('Create delegate transaction', () => {
@@ -173,9 +175,8 @@ describe('Transaction creator service', () => {
             status: TransactionStatus.CREATED,
         };
 
-        expect(transactionResponse.success).to.equal(true);
-        expect(transactionResponse.data).to.deep.equal(expected);
-
+        expect(true).to.equal(transactionResponse.success);
+        expect(expected).to.deep.equal(transactionResponse.data);
     });
 
     it('Create stake transaction', () => {
@@ -248,7 +249,10 @@ describe('Transaction creator service', () => {
                 asset: createAssetStake({
                     createdAt: 111796273,
                     amount: 100000000,
-                }, sender, 1000000000000),
+                },
+                    sender,
+                    Infinity,
+                ),
             },
             sender,
             secret,
@@ -280,9 +284,8 @@ describe('Transaction creator service', () => {
             status: TransactionStatus.CREATED,
         };
 
-        expect(transactionResponse.success).to.equal(true);
-        expect(transactionResponse.data).to.deep.equal(expected);
-
+        expect(true).to.equal(transactionResponse.success);
+        expect(expected).to.deep.equal(transactionResponse.data);
     });
 
     it('Create vote transaction', () => {
@@ -360,7 +363,11 @@ describe('Transaction creator service', () => {
                         '+f959e6c8d279c97d3ec5ba993f04ab740a6e50bec4aad75a8a1e7808a6c5eec7',
                     ],
                     type: VoteType.VOTE,
-                }, sender, 1, 1000000000000),
+                },
+                    sender,
+                    1,
+                    Infinity,
+                ),
             },
             sender,
             secret,
@@ -401,8 +408,7 @@ describe('Transaction creator service', () => {
             status: TransactionStatus.CREATED,
         };
 
-        expect(transactionResponse.success).to.equal(true);
-        expect(transactionResponse.data).to.deep.equal(expected);
-
+        expect(true).to.equal(transactionResponse.success);
+        expect(expected).to.deep.equal(transactionResponse.data);
     });
 });

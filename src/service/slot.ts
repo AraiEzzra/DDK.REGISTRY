@@ -1,5 +1,6 @@
 import { Timestamp, EpochTime } from '../model/common/type';
-import { SECOND, EPOCH_TIME, SLOT_INTERVAL } from '../const';
+import { SECOND } from '../const';
+import { CONFIG_DEFAULT } from '../config';
 
 export class SlotService {
     private epochTime: Date;
@@ -48,4 +49,4 @@ export class SlotService {
     }
 }
 
-export const slotService = new SlotService(EPOCH_TIME, SLOT_INTERVAL);
+export const slotService = new SlotService(CONFIG_DEFAULT.EPOCH_TIME, CONFIG_DEFAULT.SLOT_INTERVAL);

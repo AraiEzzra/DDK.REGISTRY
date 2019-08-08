@@ -4,7 +4,7 @@ import { clone } from '../../../../util/clone';
 import BUFFER from '../../../../util/buffer';
 import { Account } from '../../account';
 import { StakeSchema } from '../stake';
-import { FEES, MAX_REFERRAL_COUNT } from '../../../../const';
+import { CONFIG_DEFAULT } from '../../../../config';
 
 export type AssetVoteSchema = {
     votes: Array<string>;
@@ -46,7 +46,7 @@ export class AssetVote extends Asset {
         offset = BUFFER.writeUInt64LE(buff, this.unstake, offset);
 
         const sponsorsBuffer = Buffer.alloc(
-            (BUFFER.LENGTH.INT64 + BUFFER.LENGTH.INT64) * MAX_REFERRAL_COUNT,
+            (BUFFER.LENGTH.INT64 + BUFFER.LENGTH.INT64) * CONFIG_DEFAULT.MAX_REFERRAL_COUNT,
         );
 
         offset = 0;
@@ -63,6 +63,6 @@ export class AssetVote extends Asset {
         return Math.ceil(sender.stakes.reduce(
             (sum: number, stake: StakeSchema) => sum += (stake.isActive ? stake.amount : 0),
             0,
-        ) * FEES.VOTE);
+        ) * CONFIG_DEFAULT.FEES.VOTE);
     }
 }

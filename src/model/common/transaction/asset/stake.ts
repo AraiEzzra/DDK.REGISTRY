@@ -2,7 +2,7 @@ import { Asset } from '.';
 import { AirdropReward } from '../../type';
 import { clone } from '../../../../util/clone';
 import BUFFER from '../../../../util/buffer';
-import { FEES } from '../../../../const';
+import { CONFIG_DEFAULT } from '../../../../config';
 
 export type AssetStakeSchema = {
     amount: number;
@@ -58,6 +58,6 @@ export class AssetStake extends Asset {
     }
 
     calculateFee(): number {
-        return this.amount * FEES.STAKE;
+        return this.amount * CONFIG_DEFAULT.FEES.STAKE;
     }
 }
