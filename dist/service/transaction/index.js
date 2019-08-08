@@ -11,9 +11,9 @@ const responseEntity_1 = require("../../model/common/responseEntity");
 const account_1 = require("../../util/account");
 const buffer_1 = __importDefault(require("../../util/buffer"));
 const transaction_2 = require("../../util/transaction");
-const const_1 = require("../../const");
 const crypto_2 = require("../../util/crypto");
 const slot_1 = require("../slot");
+const config_1 = require("../../config");
 class TransactionCreator {
     constructor(_ed) {
         this.ed = _ed;
@@ -29,7 +29,7 @@ class TransactionCreator {
         const senderPublicKey = keyPair.publicKey.toString('hex');
         const transaction = Object.assign({}, data, { senderPublicKey, senderAddress: account_1.getAddressByPublicKey(senderPublicKey), fee: data.asset.calculateFee(sender) });
         if (!transaction.salt) {
-            transaction.salt = crypto_1.default.randomBytes(const_1.SALT_LENGTH).toString('hex');
+            transaction.salt = crypto_1.default.randomBytes(config_1.CONFIG_DEFAULT.SALT_LENGTH).toString('hex');
         }
         if (!transaction.createdAt) {
             transaction.createdAt = slot_1.slotService.getTime();

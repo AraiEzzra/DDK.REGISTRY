@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const type_1 = require("../../../../model/common/transaction/type");
 const type_2 = require("../../../../model/common/type");
-const const_1 = require("../../../../const");
+const config_1 = require("../../../../config");
 exports.ASSET_VOTE = {
     id: `ASSET.${type_1.TransactionType.VOTE}`,
     type: 'object',
@@ -13,7 +13,7 @@ exports.ASSET_VOTE = {
                 type: 'string',
                 format: 'publicKey',
             },
-            maxItems: const_1.MAX_VOTES_PER_TRANSACTION,
+            maxItems: config_1.CONFIG_DEFAULT.MAX_VOTES_PER_TRANSACTION,
         },
         type: {
             type: 'string',

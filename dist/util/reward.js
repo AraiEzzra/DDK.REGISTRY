@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const type_1 = require("../model/common/transaction/type");
-const const_1 = require("../const");
-class StakeReward {
+const type_2 = require("../model/common/type");
+class StakeRewardPercentCalculator {
     constructor(milestones, distance) {
         this.milestones = milestones;
         this.distance = distance;
@@ -15,59 +15,68 @@ class StakeReward {
         }
         return location;
     }
-    calculateReward(height) {
+    calculatePercent(height) {
         return this.milestones[this.calculateMilestone(height)];
     }
 }
-const stakeReward = new StakeReward(const_1.STAKE.REWARDS.MILESTONES, const_1.STAKE.REWARDS.DISTANCE);
-exports.calculateTotalRewardAndUnstake = (createdAt, sender, isDownVote, lastBlockHeight) => {
-    let reward = 0;
-    let unstake = 0;
-    if (isDownVote) {
-        return { reward, unstake: unstake };
+exports.StakeRewardPercentCalculator = StakeRewardPercentCalculator;
+class RewardCalculator {
+    constructor(rewardVoteCount, unstakeVoteCount, stakeRewardPercent, referralPercentPerLevel, percentCalculator) {
+        this.rewardVoteCount = rewardVoteCount;
+        this.unstakeVoteCount = unstakeVoteCount;
+        this.percentCalculator = percentCalculator;
+        this.stakeRewardPercent = stakeRewardPercent;
+        this.referralPercentPerLevel = referralPercentPerLevel;
     }
-    sender.stakes
-        .filter(stake => stake.isActive && createdAt >= stake.nextVoteMilestone)
-        .forEach((stake) => {
-        if (stake.voteCount > 0 && (stake.voteCount + 1) % const_1.STAKE.REWARD_VOTE_COUNT === 0) {
-            const stakeRewardPercent = stakeReward.calculateReward(lastBlockHeight);
-            reward += stake.amount * stakeRewardPercent;
+    calculateTotalRewardAndUnstake(createdAt, sender, voteType, lastBlockHeight) {
+        let reward = 0;
+        let unstake = 0;
+        if (voteType === type_2.VoteType.DOWN_VOTE) {
+            return { reward, unstake };
         }
-        if (stake.voteCount + 1 === const_1.STAKE.UNSTAKE_VOTE_COUNT) {
-            unstake += stake.amount;
+        sender.stakes
+            .filter(stake => stake.isActive && createdAt >= stake.nextVoteMilestone)
+            .forEach((stake) => {
+            const nextVoteCount = stake.voteCount + 1;
+            if (stake.voteCount > 0 && nextVoteCount % this.rewardVoteCount === 0) {
+                const stakeRewardPercent = this.percentCalculator.calculatePercent(lastBlockHeight);
+                reward += stake.amount * stakeRewardPercent;
+            }
+            if (nextVoteCount === this.unstakeVoteCount) {
+                unstake += stake.amount;
+            }
+        });
+        return { reward, unstake };
+    }
+    calculateAirdropReward(sender, amount, transactionType, availableAirdropBalance) {
+        const airdropReward = {
+            sponsors: new Map(),
+        };
+        if (!amount || !sender || !sender.referrals || sender.referrals.length === 0) {
+            return airdropReward;
         }
-    });
-    return { reward, unstake };
-};
-exports.calculateAirdropReward = (sender, amount, transactionType, availableAirdropBalance) => {
-    const result = {
-        sponsors: new Map(),
-    };
-    if (!amount) {
-        return result;
+        const referrals = [];
+        if (transactionType === type_1.TransactionType.STAKE) {
+            referrals.push(sender.referrals[0]);
+        }
+        else {
+            referrals.push(...sender.referrals);
+        }
+        let airdropRewardAmount = 0;
+        referrals.forEach((referral, i) => {
+            const reward = transactionType === type_1.TransactionType.STAKE
+                ? Math.ceil(amount * this.stakeRewardPercent)
+                : Math.ceil(this.referralPercentPerLevel[i] * amount);
+            airdropReward.sponsors.set(referral.address, reward);
+            airdropRewardAmount += reward;
+        });
+        if (availableAirdropBalance < airdropRewardAmount) {
+            return { sponsors: new Map() };
+        }
+        return airdropReward;
     }
-    if (!sender || !sender.referrals || (sender.referrals.length === 0)) {
-        return result;
-    }
-    const referrals = [];
-    if (transactionType === type_1.TransactionType.STAKE) {
-        referrals.push(sender.referrals[0]);
-    }
-    else {
-        referrals.push(...sender.referrals);
-    }
-    let airdropRewardAmount = 0;
-    const sponsors = new Map();
-    referrals.forEach((sponsor, i) => {
-        const reward = transactionType === type_1.TransactionType.STAKE
-            ? Math.ceil(amount * const_1.AIRDROP.STAKE_REWARD_PERCENT)
-            : Math.ceil(const_1.AIRDROP.REFERRAL_PERCENT_PER_LEVEL[i] * amount);
-        sponsors.set(sponsor.address, reward);
-        airdropRewardAmount += reward;
-    });
-    if (availableAirdropBalance < airdropRewardAmount) {
-        return result;
-    }
-    result.sponsors = sponsors;
-    return result;
+}
+exports.RewardCalculator = RewardCalculator;
+exports.initRewardCalculator = (config) => {
+    return new RewardCalculator(config.STAKE.REWARD_VOTE_COUNT, config.STAKE.UNSTAKE_VOTE_COUNT, config.AIRDROP.STAKE_REWARD_PERCENT, config.AIRDROP.REFERRAL_PERCENT_PER_LEVEL, new StakeRewardPercentCalculator(config.STAKE.REWARDS.MILESTONES, config.STAKE.REWARDS.DISTANCE));
 };

@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const _1 = require(".");
 const clone_1 = require("../../../../util/clone");
 const buffer_1 = __importDefault(require("../../../../util/buffer"));
-const const_1 = require("../../../../const");
+const config_1 = require("../../../../config");
 class AssetStake extends _1.Asset {
     constructor(data) {
         super();
@@ -41,7 +41,7 @@ class AssetStake extends _1.Asset {
         return Buffer.concat([buff, referralBuffer]);
     }
     calculateFee() {
-        return this.amount * const_1.FEES.STAKE;
+        return this.amount * config_1.CONFIG_DEFAULT.FEES.STAKE;
     }
 }
 exports.AssetStake = AssetStake;

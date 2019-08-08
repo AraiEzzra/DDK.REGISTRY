@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const const_1 = require("../const");
+const config_1 = require("../config");
 class SlotService {
     constructor(epochTime, slotInterval) {
         this.epochTime = new Date(epochTime);
@@ -36,4 +37,4 @@ class SlotService {
     }
 }
 exports.SlotService = SlotService;
-exports.slotService = new SlotService(const_1.EPOCH_TIME, const_1.SLOT_INTERVAL);
+exports.slotService = new SlotService(config_1.CONFIG_DEFAULT.EPOCH_TIME, config_1.CONFIG_DEFAULT.SLOT_INTERVAL);

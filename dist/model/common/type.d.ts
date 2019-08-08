@@ -16,6 +16,10 @@ export declare type Timestamp = number;
 export declare type AirdropReward = {
     sponsors: Map<Address, number>;
 };
+export declare type StakeReward = {
+    reward: number;
+    unstake: number;
+};
 export declare enum VoteType {
     VOTE = "+",
     DOWN_VOTE = "-"

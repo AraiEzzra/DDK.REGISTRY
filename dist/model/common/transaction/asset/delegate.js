@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const _1 = require(".");
 const clone_1 = require("../../../../util/clone");
-const const_1 = require("../../../../const");
+const config_1 = require("../../../../config");
 class AssetDelegate extends _1.Asset {
     constructor(data) {
         super();
@@ -15,7 +15,7 @@ class AssetDelegate extends _1.Asset {
         return Buffer.from(this.username, 'utf8');
     }
     calculateFee() {
-        return const_1.FEES.DELEGATE;
+        return config_1.CONFIG_DEFAULT.FEES.DELEGATE;
     }
 }
 exports.AssetDelegate = AssetDelegate;
