@@ -29,6 +29,7 @@
     "sodium-native": "^2.4.2"
   },
   "dependencies": {
+    "bitcore-mnemonic": "^8.6.0",
     "uuidv4": "^4.0.0",
     "z-schema": "^4.1.0"
   }
