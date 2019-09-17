@@ -1,7 +1,7 @@
 import Validator from 'z-schema';
 
 import { PublicKey, VoteType, LENGTH } from '../../model/common/type';
-import { MIN_LIMIT, MAX_LIMIT, MIN_OFFSET } from '../../const';
+import { MIN_OFFSET } from '../../const';
 
 const isPublicKey = (str: PublicKey) => {
     try {
@@ -35,10 +35,7 @@ Validator.registerFormat('limit', (value: string | number): boolean => {
         value = Number(value);
     }
 
-    if (value < MIN_LIMIT || value > MAX_LIMIT) {
-        return false;
-    }
-    return true;
+    return value !== NaN;
 });
 
 Validator.registerFormat('offset', (value: string | number): boolean => {
