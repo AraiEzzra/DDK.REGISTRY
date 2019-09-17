@@ -25,7 +25,7 @@ export type TransactionSchema<T extends Asset> = {
     senderAddress?: Address;
 };
 
-export class Transaction<T extends Asset> {
+export class Transaction<T extends Asset = any> {
     id: TransactionId;
     blockId: BlockId;
     type: TransactionType;
