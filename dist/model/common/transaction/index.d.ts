@@ -18,7 +18,7 @@ export declare type TransactionSchema<T extends Asset> = {
     relay?: number;
     senderAddress?: Address;
 };
-export declare class Transaction<T extends Asset> {
+export declare class Transaction<T extends Asset = any> {
     id: TransactionId;
     blockId: BlockId;
     type: TransactionType;

@@ -34,10 +34,7 @@ z_schema_1.default.registerFormat('limit', (value) => {
     if (typeof value === 'string') {
         value = Number(value);
     }
-    if (value < const_1.MIN_LIMIT || value > const_1.MAX_LIMIT) {
-        return false;
-    }
-    return true;
+    return value !== NaN;
 });
 z_schema_1.default.registerFormat('offset', (value) => {
     if (typeof value === 'string') {
