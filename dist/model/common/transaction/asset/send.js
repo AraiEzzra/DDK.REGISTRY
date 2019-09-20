@@ -25,7 +25,7 @@ class AssetSend extends _1.Asset {
         return buff;
     }
     calculateFee() {
-        return this.amount * config_1.CONFIG_DEFAULT.FEES.SEND;
+        return Math.trunc(this.amount * config_1.CONFIG_DEFAULT.FEES.SEND);
     }
 }
 exports.AssetSend = AssetSend;

@@ -35,6 +35,6 @@ export class AssetSend extends Asset {
     }
 
     calculateFee(): number {
-        return this.amount * CONFIG_DEFAULT.FEES.SEND;
+        return Math.trunc(this.amount * CONFIG_DEFAULT.FEES.SEND);
     }
 }
