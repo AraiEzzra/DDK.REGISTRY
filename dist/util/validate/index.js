@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const z_schema_1 = __importDefault(require("z-schema"));
+const bitcore_mnemonic_1 = __importDefault(require("bitcore-mnemonic"));
 const type_1 = require("../../model/common/type");
 const const_1 = require("../../const");
 const isPublicKey = (str) => {
@@ -76,8 +77,8 @@ z_schema_1.default.registerFormat('version', (str) => {
     }
     return /^([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})([a-z]{1})?$/g.test(str);
 });
-z_schema_1.default.registerFormat('secret', (str) => {
-    return /^(\w+\s){11}\w+$/.test(str);
+z_schema_1.default.registerFormat('secret', (secret) => {
+    return bitcore_mnemonic_1.default.isValid(secret);
 });
 z_schema_1.default.registerFormat('vote', (str) => {
     return new RegExp(`^[${type_1.VoteType.VOTE}${type_1.VoteType.DOWN_VOTE}]`, 'g').test(str) && isPublicKey(str.substr(1));
