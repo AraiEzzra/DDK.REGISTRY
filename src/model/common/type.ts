@@ -78,3 +78,18 @@ export type BlockchainInfoSchema = {
     totalStakeHolders: number;
     transactionsCount: number;
 };
+
+export type SystemInfoSchema = {
+    height: number;
+    consensus: number;
+    datetime: Date;
+    transactionsCount: {
+        queue: number;
+        conflictedQueue: number;
+        pool: number;
+    };
+    peersCount: number;
+    peers: Array<any>;
+    broadhash: string;
+    version: string;
+};
