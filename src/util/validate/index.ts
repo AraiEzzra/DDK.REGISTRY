@@ -1,4 +1,5 @@
 import Validator from 'z-schema';
+import Mnemonic from 'bitcore-mnemonic';
 
 import { PublicKey, VoteType, LENGTH } from '../../model/common/type';
 import { MIN_OFFSET } from '../../const';
@@ -86,8 +87,8 @@ Validator.registerFormat('version', (str) => {
     return /^([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})([a-z]{1})?$/g.test(str);
 });
 
-Validator.registerFormat('secret', (str) => {
-    return /^(\w+\s){11}\w+$/.test(str);
+Validator.registerFormat('secret', (secret) => {
+    return Mnemonic.isValid(secret);
 });
 
 Validator.registerFormat('vote', (str) => {
