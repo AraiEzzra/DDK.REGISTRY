@@ -36,7 +36,8 @@
             "es6"
         ],
         "types": [
-            "node"
+            "node",
+            "mocha"
         ]
     },
     "include": [
