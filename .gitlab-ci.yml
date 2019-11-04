@@ -1,0 +1,17 @@
+image: node:10-alpine
+
+stages:
+  - test
+
+before_script:
+  - npm i
+  - cd ..
+  - npm i sodium-native
+  - cd ddk.registry
+
+test:
+  stage: test
+  tags:
+    - ddk.registry
+  script:
+    - npm run test
