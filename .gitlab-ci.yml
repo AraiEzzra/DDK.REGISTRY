@@ -4,6 +4,7 @@ stages:
   - test
 
 before_script:
+  - apk add python curl bash automake autoconf libtool git alpine-sdk postgresql-dev netcat-openbsd
   - npm i
   - cd ..
   - npm i sodium-native
