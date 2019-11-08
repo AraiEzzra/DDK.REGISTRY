@@ -6,8 +6,18 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "export NODE_PATH=./ && mocha --require ts-node/register './test/**/*.test.ts'"
+    "test": "export NODE_PATH=./ && mocha --require ts-node/register './test/**/*.test.ts'",
+    "lint": "tslint --project '.'",
+    "precommit-msg": "echo 'Pre-commit checks...' && exit 0",
+    "add-dist": "git add ./dist"
   },
+  "pre-commit": [
+    "precommit-msg",
+    "lint",
+    "test",
+    "build",
+    "add-dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AraiEzzra/DDK.REGISTRY.git"
@@ -20,6 +30,7 @@
     "@types/uuidv4": "^2.0.0",
     "chai": "^4.2.0",
     "mocha": "^6.1.4",
+    "pre-commit": "^1.2.2",
     "ts-loader": "^6.0.2",
     "ts-node": "^8.3.0",
     "tslint": "^5.17.0",
@@ -32,5 +43,6 @@
     "bitcore-mnemonic": "^8.6.0",
     "uuidv4": "^4.0.0",
     "z-schema": "^4.1.0"
-  }
+  },
+  "author": "Oleksandr Shevchenko"
 }
