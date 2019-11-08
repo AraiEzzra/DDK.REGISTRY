@@ -40,5 +40,6 @@
     "bitcore-mnemonic": "^8.6.0",
     "uuidv4": "^4.0.0",
     "z-schema": "^4.1.0"
-  }
+  },
+  "author": "Oleksandr Shevchenko"
 }
