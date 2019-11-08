@@ -8,12 +8,15 @@
     "build": "tsc",
     "test": "export NODE_PATH=./ && mocha --require ts-node/register './test/**/*.test.ts'",
     "lint": "tslint --project '.'",
-    "precommit-msg": "echo 'Pre-commit checks...' && exit 0"
+    "precommit-msg": "echo 'Pre-commit checks...' && exit 0",
+    "add-dist": "git add ./dist"
   },
   "pre-commit": [
     "precommit-msg",
     "lint",
-    "test"
+    "test",
+    "build",
+    "add-dist"
   ],
   "repository": {
     "type": "git",
