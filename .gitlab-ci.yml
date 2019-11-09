@@ -1,18 +1,23 @@
 image: node:10-alpine
 
 stages:
+  - build
   - test
 
-before_script:
-  - apk add python curl bash automake autoconf libtool git alpine-sdk postgresql-dev netcat-openbsd
-  - npm i
-  - cd ..
-  - npm i sodium-native
-  - cd ddk.registry
-
-test:
-  stage: test
+build:
+  stage: build
+  only:
+    - master
   tags:
     - ddk.registry
   script:
-    - npm run test
+    - sh build.sh
+
+test:
+  stage: test
+  only:
+    - master
+  tags:
+    - ddk.registry
+  script:
+    - sh test.sh
