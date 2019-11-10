@@ -1,20 +1,20 @@
 import { expect } from 'chai';
 
-import { transactionCreator } from '../../../src/service/transaction';
-import { createAssetVote } from '../../../src/service/transaction/vote';
-import { createAssetStake } from '../../../src/service/transaction/stake';
-import { TransactionType } from '../../../src/model/common/transaction/type';
-import { AssetSend } from '../../../src/model/common/transaction/asset/send';
-import { AssetVote } from '../../../src/model/common/transaction/asset/vote';
-import { AssetReferral } from '../../../src/model/common/transaction/asset/referral';
-import { AssetDelegate } from '../../../src/model/common/transaction/asset/delegate';
-import { AssetSignature } from '../../../src/model/common/transaction/asset/signature';
-import { TransactionSchema } from '../../../src/model/common/transaction';
-import { TransactionStatus } from '../../../src/model/common/transaction/status';
-import { VoteType, Address } from '../../../src/model/common/type';
-import { Account } from '../../../src/model/common/account';
-import { AssetStake } from '../../../src/model/common/transaction/asset/stake';
-import DDK, { WORKSPACE } from '../../../src';
+import DDK, { WORKSPACE } from '../..';
+import { transactionCreator } from '.';
+import { TransactionType } from '../../model/common/transaction/type';
+import { AssetReferral } from '../../model/common/transaction/asset/referral';
+import { TransactionSchema } from '../../model/common/transaction';
+import { TransactionStatus } from '../../model/common/transaction/status';
+import { AssetSend } from '../../model/common/transaction/asset/send';
+import { AssetSignature } from '../../model/common/transaction/asset/signature';
+import { AssetDelegate } from '../../model/common/transaction/asset/delegate';
+import { Account } from '../../model/common/account';
+import { createAssetStake } from './stake';
+import { AssetStake } from '../../model/common/transaction/asset/stake';
+import { createAssetVote } from './vote';
+import { VoteType, Address } from '../../model/common/type';
+import { AssetVote } from '../../model/common/transaction/asset/vote';
 
 describe('Transaction creator service', () => {
     beforeEach(() => {

@@ -1,11 +1,12 @@
 import { expect } from 'chai';
 
-import { Transaction } from '../../../../src/model/common/transaction';
-import { AssetSend } from '../../../../src/model/common/transaction/asset/send';
-import { TransactionType } from '../../../../src/model/common/transaction/type';
+import { Transaction } from '../model/common/transaction';
+import { AssetSend } from '../model/common/transaction/asset/send';
+import { clone } from '../util/clone';
+import { TransactionType } from '../model/common/transaction/type';
 
-describe('Transaction Model', () => {
-    it('Copy', () => {
+describe('Clone util', () => {
+    it('Positive', () => {
         const trs = new Transaction<AssetSend>({
             id: '2c52682e6a51a9ddfd48a679a95c9fea4e693790aec5968535a482088b6c75bf',
             blockId: 'cbb9449abb9672d33fa2eb200b1c8b03db7c6572dfb6e59dc334c0ab82b63ab0',
@@ -22,10 +23,10 @@ describe('Transaction Model', () => {
             }),
         });
 
-        const copy = trs.getCopy();
+        const copy = clone<Transaction<AssetSend>>(trs);
 
         expect(copy).to.deep.equal(trs);
         expect(copy.asset).to.not.equal(trs.asset);
-        expect(typeof copy.getCopy).to.equal('function');
+        expect(typeof copy.getCopy).to.not.equal('function');
     });
 });
