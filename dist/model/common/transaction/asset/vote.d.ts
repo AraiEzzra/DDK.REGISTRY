@@ -18,5 +18,7 @@ export declare class AssetVote extends Asset {
     constructor(data: AssetVoteSchema);
     getCopy(): AssetVote;
     getBytes(): Buffer;
+    getBufferSize(): number;
+    writeBytes(buffer: Buffer, offset: number): number;
     calculateFee(sender: Account): number;
 }

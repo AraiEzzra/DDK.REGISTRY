@@ -5,8 +5,7 @@ import { IKeyPair, Ed, ed } from '../../util/ed';
 import { TransactionType } from '../../model/common/transaction/type';
 import { ResponseEntity } from '../../model/common/responseEntity';
 import { getAddressByPublicKey } from '../../util/account';
-import BUFFER from '../../util/buffer';
-import { TRANSACTION_BUFFER_SIZE } from '../../util/transaction';
+import { TRANSACTION_BUFFER_SIZE, SIGNATURE_LENGTH } from '../../util/transaction';
 import { Asset } from '../../model/common/transaction/asset';
 import { TransactionCreationData } from '../../model/common/type';
 import { createKeyPairBySecret } from '../../util/crypto';
@@ -70,22 +69,32 @@ export class TransactionCreator implements ITransactionCreator {
         skipSignature: boolean = false,
         skipSecondSignature: boolean = false,
     ): Buffer {
-        const assetBytes = trs.asset.getBytes();
+        let bufferSize = TRANSACTION_BUFFER_SIZE + trs.asset.getBufferSize();
+        if (!skipSignature && trs.signature) {
+            bufferSize += SIGNATURE_LENGTH;
+        }
+        if (!skipSecondSignature && trs.secondSignature) {
+            bufferSize += SIGNATURE_LENGTH;
+        }
 
-        const bytes = Buffer.alloc(TRANSACTION_BUFFER_SIZE);
+        const bytes = Buffer.alloc(bufferSize);
+
         let offset = 0;
+        offset = bytes.writeInt8(trs.type, offset);
+        offset = bytes.writeUInt32LE(trs.createdAt, offset);
+        offset += bytes.write(trs.salt, offset, 'hex');
+        offset += bytes.write(trs.senderPublicKey, offset, 'hex');
 
-        offset = BUFFER.writeInt8(bytes, trs.type, offset);
-        BUFFER.writeInt32LE(bytes, trs.createdAt, offset);
+        if (!skipSignature && trs.signature) {
+            offset += bytes.write(trs.signature, offset, 'hex');
+        }
+        if (!skipSecondSignature && trs.secondSignature) {
+            offset += bytes.write(trs.secondSignature, offset, 'hex');
+        }
 
-        return Buffer.concat([
-            bytes,
-            Buffer.from(trs.salt, 'hex'),
-            Buffer.from(trs.senderPublicKey, 'hex'),
-            Buffer.from(!skipSignature && trs.signature ? trs.signature : '', 'hex'),
-            Buffer.from(!skipSecondSignature && trs.secondSignature ? trs.secondSignature : '', 'hex'),
-            assetBytes,
-        ]);
+        trs.asset.writeBytes(bytes, offset);
+
+        return bytes;
     }
 
     getHash(trs: TransactionSchema<Asset>): Buffer {

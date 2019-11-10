@@ -15,5 +15,7 @@ export declare class AssetStake extends Asset {
     constructor(data: AssetStakeSchema);
     getCopy(): AssetStake;
     getBytes(): Buffer;
+    getBufferSize(): number;
+    writeBytes(buffer: Buffer, offset: number): number;
     calculateFee(): number;
 }

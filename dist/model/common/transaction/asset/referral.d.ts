@@ -9,5 +9,7 @@ export declare class AssetReferral extends Asset {
     constructor(data: AssetReferralSchema);
     getCopy(): AssetReferral;
     getBytes(): Buffer;
+    getBufferSize(): number;
+    writeBytes(buffer: Buffer, offset: number): number;
     calculateFee(): number;
 }
