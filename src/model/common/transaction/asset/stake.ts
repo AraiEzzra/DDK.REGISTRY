@@ -63,7 +63,7 @@ export class AssetStake extends Asset {
     getBufferSize(): number {
         let size = BUFFER_SIZE;
         if (this.airdropReward && this.airdropReward.sponsors.size > 0) {
-            size += REWARD_BUFFER_SIZE * this.airdropReward.sponsors.size;
+            size += REWARD_BUFFER_SIZE;
         }
 
         return size;
@@ -77,8 +77,11 @@ export class AssetStake extends Asset {
         if (this.airdropReward && this.airdropReward.sponsors.size > 0) {
             for (const [sponsorAddress, reward] of this.airdropReward.sponsors) {
                 offset = BUFFER.writeUInt64LE(buffer, sponsorAddress, offset);
-                BUFFER.writeUInt64LE(buffer, reward, offset);
+                offset = BUFFER.writeUInt64LE(buffer, reward, offset);
             }
+        } else {
+            offset = BUFFER.writeUInt64LE(buffer, 0, offset);
+            offset = BUFFER.writeUInt64LE(buffer, 0, offset);
         }
 
         return offset;

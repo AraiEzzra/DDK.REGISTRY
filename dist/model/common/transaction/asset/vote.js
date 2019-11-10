@@ -55,7 +55,10 @@ class AssetVote extends _1.Asset {
         }
         if (this.airdropReward.sponsors.size < config_1.CONFIG_DEFAULT.MAX_REFERRAL_COUNT) {
             const diff = config_1.CONFIG_DEFAULT.MAX_REFERRAL_COUNT - this.airdropReward.sponsors.size;
-            offset += diff * REWARD_BUFFER_SIZE;
+            for (let i = 0; i < diff; i++) {
+                offset = buffer_1.default.writeUInt64LE(buffer, 0, offset);
+                offset = buffer_1.default.writeUInt64LE(buffer, 0, offset);
+            }
         }
         offset += buffer.write(this.votes.join(''), offset, 'utf8');
         return offset;

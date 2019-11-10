@@ -43,7 +43,7 @@ class AssetStake extends _1.Asset {
     getBufferSize() {
         let size = BUFFER_SIZE;
         if (this.airdropReward && this.airdropReward.sponsors.size > 0) {
-            size += REWARD_BUFFER_SIZE * this.airdropReward.sponsors.size;
+            size += REWARD_BUFFER_SIZE;
         }
         return size;
     }
@@ -54,8 +54,12 @@ class AssetStake extends _1.Asset {
         if (this.airdropReward && this.airdropReward.sponsors.size > 0) {
             for (const [sponsorAddress, reward] of this.airdropReward.sponsors) {
                 offset = buffer_1.default.writeUInt64LE(buffer, sponsorAddress, offset);
-                buffer_1.default.writeUInt64LE(buffer, reward, offset);
+                offset = buffer_1.default.writeUInt64LE(buffer, reward, offset);
             }
+        }
+        else {
+            offset = buffer_1.default.writeUInt64LE(buffer, 0, offset);
+            offset = buffer_1.default.writeUInt64LE(buffer, 0, offset);
         }
         return offset;
     }

@@ -49,7 +49,7 @@ class TransactionCreator {
         if (!skipSecondSignature && trs.secondSignature) {
             bufferSize += transaction_2.SIGNATURE_LENGTH;
         }
-        const bytes = Buffer.alloc(bufferSize);
+        const bytes = Buffer.allocUnsafe(bufferSize);
         let offset = 0;
         offset = bytes.writeInt8(trs.type, offset);
         offset = bytes.writeUInt32LE(trs.createdAt, offset);

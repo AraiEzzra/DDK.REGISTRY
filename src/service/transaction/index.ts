@@ -77,7 +77,7 @@ export class TransactionCreator implements ITransactionCreator {
             bufferSize += SIGNATURE_LENGTH;
         }
 
-        const bytes = Buffer.alloc(bufferSize);
+        const bytes = Buffer.allocUnsafe(bufferSize);
 
         let offset = 0;
         offset = bytes.writeInt8(trs.type, offset);
