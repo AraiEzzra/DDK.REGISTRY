@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "export NODE_PATH=./ && mocha --require ts-node/register './test/**/*.test.ts'",
+    "test": "export NODE_PATH=./ && mocha --require ts-node/register './src/**/*.test.ts'",
     "lint": "tslint --project '.'",
     "precommit-msg": "echo 'Pre-commit checks...' && exit 0",
     "add-dist": "git add ./dist"

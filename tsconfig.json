@@ -46,8 +46,8 @@
     "exclude": [
         "node_modules/**",
         "dist/**",
-        "test/**",
-        "build/**"
+        "build/**",
+        "src/**/*.test.ts"
     ],
     "compileOnSave": false
 }
