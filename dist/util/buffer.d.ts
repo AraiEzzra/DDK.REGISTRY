@@ -11,8 +11,9 @@ declare class BUFFER {
     stringNullGenerator(count: number): string;
     writeInt8(buff: Buffer, int8: number, offset: number): number;
     writeInt32LE(buff: Buffer, int32: number, offset: number): number;
-    writeUInt64LE(buff: Buffer, bigint: number | BigInt, offset: number): number;
+    writeUInt64LE(buff: Buffer, bigint: number | BigInt, offset?: number): number;
     writeNotNull(buff: Buffer, val: string, offset: number, len: number): number;
 }
+export declare const bufferToHex: (buf: Buffer) => string;
 declare const _default: BUFFER;
 export default _default;

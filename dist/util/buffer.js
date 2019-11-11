@@ -26,7 +26,7 @@ class BUFFER {
         buff.writeInt32LE(int32, offset);
         return offset + this.LENGTH.UINT32;
     }
-    writeUInt64LE(buff, bigint, offset) {
+    writeUInt64LE(buff, bigint, offset = 0) {
         const MAX = 64;
         let bin = bigint.toString(2);
         bin = this.stringNullGenerator(MAX - bin.length) + bin;
@@ -42,4 +42,13 @@ class BUFFER {
         return offset + len;
     }
 }
+exports.bufferToHex = (buf) => {
+    const HEX_RADIX = 16;
+    const hex = [];
+    for (let i = 0; i < buf.length; i++) {
+        const c = (buf[i] < HEX_RADIX ? '0' : '') + buf[i].toString(HEX_RADIX);
+        hex.push(c);
+    }
+    return `0x${hex.join('')}`;
+};
 exports.default = new BUFFER();
