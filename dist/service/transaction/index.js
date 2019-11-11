@@ -9,7 +9,6 @@ const ed_1 = require("../../util/ed");
 const type_1 = require("../../model/common/transaction/type");
 const responseEntity_1 = require("../../model/common/responseEntity");
 const account_1 = require("../../util/account");
-const buffer_1 = __importDefault(require("../../util/buffer"));
 const transaction_2 = require("../../util/transaction");
 const crypto_2 = require("../../util/crypto");
 const slot_1 = require("../slot");
@@ -43,19 +42,27 @@ class TransactionCreator {
         return new responseEntity_1.ResponseEntity({ data: new transaction_1.Transaction(transaction) });
     }
     getBytes(trs, skipSignature = false, skipSecondSignature = false) {
-        const assetBytes = trs.asset.getBytes();
-        const bytes = Buffer.alloc(transaction_2.TRANSACTION_BUFFER_SIZE);
+        let bufferSize = transaction_2.TRANSACTION_BUFFER_SIZE + trs.asset.getBufferSize();
+        if (!skipSignature && trs.signature) {
+            bufferSize += transaction_2.SIGNATURE_LENGTH;
+        }
+        if (!skipSecondSignature && trs.secondSignature) {
+            bufferSize += transaction_2.SIGNATURE_LENGTH;
+        }
+        const bytes = Buffer.allocUnsafe(bufferSize);
         let offset = 0;
-        offset = buffer_1.default.writeInt8(bytes, trs.type, offset);
-        buffer_1.default.writeInt32LE(bytes, trs.createdAt, offset);
-        return Buffer.concat([
-            bytes,
-            Buffer.from(trs.salt, 'hex'),
-            Buffer.from(trs.senderPublicKey, 'hex'),
-            Buffer.from(!skipSignature && trs.signature ? trs.signature : '', 'hex'),
-            Buffer.from(!skipSecondSignature && trs.secondSignature ? trs.secondSignature : '', 'hex'),
-            assetBytes,
-        ]);
+        offset = bytes.writeInt8(trs.type, offset);
+        offset = bytes.writeUInt32LE(trs.createdAt, offset);
+        offset += bytes.write(trs.salt, offset, 'hex');
+        offset += bytes.write(trs.senderPublicKey, offset, 'hex');
+        if (!skipSignature && trs.signature) {
+            offset += bytes.write(trs.signature, offset, 'hex');
+        }
+        if (!skipSecondSignature && trs.secondSignature) {
+            offset += bytes.write(trs.secondSignature, offset, 'hex');
+        }
+        trs.asset.writeBytes(bytes, offset);
+        return bytes;
     }
     getHash(trs) {
         return crypto_1.default.createHash('sha256').update(this.getBytes(trs)).digest();

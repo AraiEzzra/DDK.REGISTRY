@@ -47,7 +47,8 @@
         "node_modules/**",
         "dist/**",
         "build/**",
-        "src/**/*.test.ts"
+        "src/**/*.test.ts",
+        "src/**/*.benchmark.ts",
     ],
     "compileOnSave": false
 }

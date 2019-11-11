@@ -9,6 +9,10 @@ export type AssetSendSchema = {
     amount: number;
 };
 
+const bufferSize =
+    BUFFER.LENGTH.INT64 + // recipientAddress
+    BUFFER.LENGTH.INT64;  // amount
+
 export class AssetSend extends Asset {
     recipientAddress: Address;
     amount: number;
@@ -25,13 +29,19 @@ export class AssetSend extends Asset {
     }
 
     getBytes(): Buffer {
-        const buff = Buffer.alloc(
-            BUFFER.LENGTH.INT64 + // recipientAddress
-            BUFFER.LENGTH.INT64  // amount
-        );
+        const buff = Buffer.allocUnsafe(bufferSize);
         let offset = BUFFER.writeUInt64LE(buff, this.recipientAddress, 0);
         BUFFER.writeUInt64LE(buff, this.amount, offset);
         return buff;
+    }
+
+    getBufferSize(): number {
+        return bufferSize;
+    }
+
+    writeBytes(buffer: Buffer, offset: number): number {
+        offset = BUFFER.writeUInt64LE(buffer, this.recipientAddress, offset);
+        return BUFFER.writeUInt64LE(buffer, this.amount, offset);
     }
 
     calculateFee(): number {

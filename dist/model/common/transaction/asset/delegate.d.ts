@@ -8,5 +8,7 @@ export declare class AssetDelegate extends Asset {
     constructor(data: AssetDelegateSchema);
     getCopy(): AssetDelegate;
     getBytes(): Buffer;
+    getBufferSize(): number;
+    writeBytes(buffer: Buffer, offset: number): number;
     calculateFee(): number;
 }

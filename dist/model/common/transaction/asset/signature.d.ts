@@ -9,5 +9,7 @@ export declare class AssetSignature extends Asset {
     constructor(data: AssetSignatureSchema);
     getCopy(): AssetSignature;
     getBytes(): Buffer;
+    getBufferSize(): number;
+    writeBytes(buffer: Buffer, offset: number): number;
     calculateFee(): number;
 }

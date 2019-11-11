@@ -11,5 +11,7 @@ export declare class AssetSend extends Asset {
     constructor(data: AssetSendSchema);
     getCopy(): AssetSend;
     getBytes(): Buffer;
+    getBufferSize(): number;
+    writeBytes(buffer: Buffer, offset: number): number;
     calculateFee(): number;
 }
