@@ -1,8 +1,8 @@
-import { Address } from '../../type';
 import { Asset } from '.';
 import { clone } from '../../../../util/clone';
 import BUFFER from '../../../../util/buffer';
 import { ADDRESS_LENGTH } from '../../../../util/transaction';
+import { Address } from '../../address';
 
 export type AssetReferralSchema = {
     referral: Address;
@@ -23,7 +23,7 @@ export class AssetReferral extends Asset {
 
     getBytes(): Buffer {
         const buff = Buffer.alloc(ADDRESS_LENGTH);
-        BUFFER.writeUInt64LE(buff, this.referral, 0);
+        BUFFER.writeUInt64LE(buff, this.referral.value, 0);
         return buff;
     }
 
@@ -32,7 +32,7 @@ export class AssetReferral extends Asset {
     }
 
     writeBytes(buffer: Buffer, offset: number): number {
-        return BUFFER.writeUInt64LE(buffer, this.referral, offset);
+        return BUFFER.writeUInt64LE(buffer, this.referral.value, offset);
     }
 
     calculateFee(): number {

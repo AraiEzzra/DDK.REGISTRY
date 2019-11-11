@@ -1,8 +1,8 @@
-import { IAssetSerializer } from '..';
 import { AssetDelegate } from '../../../../model/common/transaction/asset/delegate';
 import { RawAsset } from '../../../../model/common/type';
+import { ISerializer } from '../..';
 
-class AssetDelegateSerializer implements IAssetSerializer<AssetDelegate> {
+class AssetDelegateSerializer implements ISerializer<RawAsset, AssetDelegate> {
     serialize(asset: AssetDelegate): RawAsset {
         return {
             username: asset.username,

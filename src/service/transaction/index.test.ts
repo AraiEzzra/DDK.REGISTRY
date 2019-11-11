@@ -13,8 +13,9 @@ import { Account } from '../../model/common/account';
 import { createAssetStake } from './stake';
 import { AssetStake } from '../../model/common/transaction/asset/stake';
 import { createAssetVote } from './vote';
-import { VoteType, Address } from '../../model/common/type';
+import { VoteType } from '../../model/common/type';
 import { AssetVote } from '../../model/common/transaction/asset/vote';
+import { Address } from '../../model/common/address';
 
 describe('Transaction creator service', () => {
     beforeEach(() => {
@@ -29,7 +30,7 @@ describe('Transaction creator service', () => {
                 salt: '894cdfa99bc38ca098d38d305c811496',
                 type: TransactionType.REFERRAL,
                 asset: new AssetReferral({
-                    referral: BigInt('4957046151241062485'),
+                    referral: new Address('4957046151241062485'),
                 }),
             },
             sender: undefined,
@@ -47,12 +48,12 @@ describe('Transaction creator service', () => {
             senderPublicKey: 'f4ae589b02f97e9ab5bce61cf187bcc96cfb3fdf9a11333703a682b7d47c8dc2',
             type: TransactionType.REFERRAL,
             asset: new AssetReferral({
-                referral: BigInt('4957046151241062485'),
+                referral: new Address('4957046151241062485'),
             }),
             relay: 0,
             confirmations: 0,
             secondSignature: undefined,
-            senderAddress: BigInt('4995063339468361088'),
+            senderAddress: new Address('4995063339468361088'),
             status: TransactionStatus.CREATED,
         };
 
@@ -69,7 +70,7 @@ describe('Transaction creator service', () => {
                 type: TransactionType.SEND,
                 asset: new AssetSend({
                     amount: 10000000000,
-                    recipientAddress: BigInt('4957046151241062485'),
+                    recipientAddress: new Address('4957046151241062485'),
                 }),
             },
             sender: undefined,
@@ -88,12 +89,12 @@ describe('Transaction creator service', () => {
             type: TransactionType.SEND,
             asset: new AssetSend({
                 amount: 10000000000,
-                recipientAddress: BigInt('4957046151241062485'),
+                recipientAddress: new Address('4957046151241062485'),
             }),
             relay: 0,
             confirmations: 0,
             secondSignature: undefined,
-            senderAddress: BigInt('4995063339468361088'),
+            senderAddress: new Address('4995063339468361088'),
             status: TransactionStatus.CREATED,
         };
 
@@ -132,7 +133,7 @@ describe('Transaction creator service', () => {
             relay: 0,
             confirmations: 0,
             secondSignature: undefined,
-            senderAddress: BigInt('4995063339468361088'),
+            senderAddress: new Address('4995063339468361088'),
             status: TransactionStatus.CREATED,
         };
 
@@ -171,7 +172,7 @@ describe('Transaction creator service', () => {
             relay: 0,
             confirmations: 0,
             secondSignature: undefined,
-            senderAddress: BigInt('4995063339468361088'),
+            senderAddress: new Address('4995063339468361088'),
             status: TransactionStatus.CREATED,
         };
 
@@ -271,7 +272,7 @@ describe('Transaction creator service', () => {
             asset: new AssetStake({
                 airdropReward: {
                     sponsors: new Map<Address, number>()
-                        .set(BigInt('16980293496863192173'), 10000000),
+                        .set(new Address('16980293496863192173'), 10000000),
                 },
                 amount: 100000000,
                 startTime: 111796273,
@@ -280,7 +281,7 @@ describe('Transaction creator service', () => {
             relay: 0,
             confirmations: 0,
             secondSignature: undefined,
-            senderAddress: BigInt('4995063339468361088'),
+            senderAddress: new Address('4995063339468361088'),
             status: TransactionStatus.CREATED,
         };
 
@@ -386,11 +387,11 @@ describe('Transaction creator service', () => {
             asset: new AssetVote({
                 airdropReward: {
                     sponsors: new Map<Address, number>()
-                        .set(BigInt('16980293496863192173'), 3000000)
-                        .set(BigInt('10577313357240767744'), 1800000)
-                        .set(BigInt('13348365708182703460'), 1200000)
-                        .set(BigInt('858063025382772148'), 1200000)
-                        .set(BigInt('10759421590558995180'), 600000),
+                        .set(new Address('16980293496863192173'), 3000000)
+                        .set(new Address('10577313357240767744'), 1800000)
+                        .set(new Address('13348365708182703460'), 1200000)
+                        .set(new Address('858063025382772148'), 1200000)
+                        .set(new Address('10759421590558995180'), 600000),
                 },
                 votes: [
                     '+137b9f0f839ab3ecd2146bfecd64d31e127d79431211e352bedfeba5fd61a57a',
@@ -404,7 +405,7 @@ describe('Transaction creator service', () => {
             relay: 0,
             confirmations: 0,
             secondSignature: undefined,
-            senderAddress: BigInt('4995063339468361088'),
+            senderAddress: new Address('4995063339468361088'),
             status: TransactionStatus.CREATED,
         };
 

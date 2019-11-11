@@ -8,6 +8,7 @@ const stake_1 = require("./asset/stake");
 const vote_1 = require("./asset/vote");
 const transaction_1 = require("../../../model/common/transaction");
 const account_1 = require("../../account");
+const address_1 = require("../../../model/common/address");
 const ASSET_SERIALIZATORS = {
     [type_1.TransactionType.REFERRAL]: referral_1.assetReferralSerializer,
     [type_1.TransactionType.SEND]: send_1.assetSendSerializer,
@@ -46,7 +47,7 @@ class TransactionSerializer {
             createdAt: Number(rawTrs.createdAt),
             senderPublicKey: rawTrs.senderPublicKey,
             senderAddress: rawTrs.senderAddress
-                ? BigInt(rawTrs.senderAddress)
+                ? new address_1.Address(rawTrs.senderAddress)
                 : account_1.getAddressByPublicKey(rawTrs.senderPublicKey),
             signature: rawTrs.signature,
             secondSignature: rawTrs.secondSignature,

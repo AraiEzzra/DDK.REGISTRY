@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const crypto_1 = __importDefault(require("crypto"));
 const const_1 = require("../const");
 const buffer_1 = require("./buffer");
+const address_1 = require("../model/common/address");
 exports.getAddressByPublicKey = (publicKey) => {
     // @ts-ignore
     const publicKeyHash = crypto_1.default.createHash('sha256').update(publicKey, 'hex').digest();
@@ -13,5 +14,5 @@ exports.getAddressByPublicKey = (publicKey) => {
     for (let i = 0; i < const_1.ADDRESS_BYTES_LENGTH; i++) {
         temp[i] = publicKeyHash[const_1.ADDRESS_BYTES_LENGTH - 1 - i];
     }
-    return BigInt(buffer_1.bufferToHex(temp).toString());
+    return new address_1.Address(buffer_1.bufferToHex(temp).toString());
 };

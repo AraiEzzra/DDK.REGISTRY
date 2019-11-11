@@ -52,7 +52,7 @@ export class AssetStake extends Asset {
         offset = 0;
         if (this.airdropReward && this.airdropReward.sponsors.size > 0) {
             for (const [sponsorAddress, reward] of this.airdropReward.sponsors) {
-                offset = BUFFER.writeUInt64LE(referralBuffer, sponsorAddress, offset);
+                offset = BUFFER.writeUInt64LE(referralBuffer, sponsorAddress.value, offset);
                 BUFFER.writeUInt64LE(referralBuffer, reward, offset);
             }
         }
@@ -76,7 +76,7 @@ export class AssetStake extends Asset {
 
         if (this.airdropReward && this.airdropReward.sponsors.size > 0) {
             for (const [sponsorAddress, reward] of this.airdropReward.sponsors) {
-                offset = BUFFER.writeUInt64LE(buffer, sponsorAddress, offset);
+                offset = BUFFER.writeUInt64LE(buffer, sponsorAddress.value, offset);
                 offset = BUFFER.writeUInt64LE(buffer, reward, offset);
             }
         } else {

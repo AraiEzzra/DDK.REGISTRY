@@ -1,8 +1,9 @@
 import { Account } from '../model/common/account';
 import { TransactionType } from '../model/common/transaction/type';
-import { Address, AirdropReward, Timestamp, StakeReward, VoteType } from '../model/common/type';
+import { AirdropReward, Timestamp, StakeReward, VoteType } from '../model/common/type';
 import { StakeSchema } from '../model/common/transaction/stake';
 import { ConfigSchema } from '../config';
+import { Address } from '../model/common/address';
 
 export interface IStakeRewardPercentCalculator {
     calculatePercent(height: number): number;

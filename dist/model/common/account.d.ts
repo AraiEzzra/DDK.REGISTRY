@@ -1,6 +1,7 @@
-import { Address, PublicKey } from './type';
+import { PublicKey } from './type';
 import { Delegate } from './delegate';
 import { StakeSchema } from './transaction/stake';
+import { Address } from './address';
 export declare type AccountSchema = {
     publicKey: PublicKey;
     actualBalance?: number;

@@ -4,6 +4,7 @@ import { Transaction } from '../model/common/transaction';
 import { AssetSend } from '../model/common/transaction/asset/send';
 import { clone } from '../util/clone';
 import { TransactionType } from '../model/common/transaction/type';
+import { Address } from '../model/common/address';
 
 describe('Clone util', () => {
     it('Positive', () => {
@@ -18,7 +19,7 @@ describe('Clone util', () => {
             fee: 0,
             confirmations: 0,
             asset: new AssetSend({
-                recipientAddress: BigInt('7897332094363171058'),
+                recipientAddress: new Address('7897332094363171058'),
                 amount: 10000,
             }),
         });

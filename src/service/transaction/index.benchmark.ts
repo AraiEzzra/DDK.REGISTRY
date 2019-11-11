@@ -4,6 +4,7 @@ import { transactionCreator } from '.';
 import { TransactionSchema } from '../../model/common/transaction';
 import { AssetSend } from '../../model/common/transaction/asset/send';
 import { TransactionType } from '../../model/common/transaction/type';
+import { Address } from '../../model/common/address';
 
 const suite = new Benchmark.Suite;
 
@@ -19,12 +20,12 @@ const transaction: TransactionSchema<AssetSend> = {
     type: TransactionType.SEND,
     asset: new AssetSend({
         amount: 10000000000,
-        recipientAddress: BigInt('4957046151241062485'),
+        recipientAddress: new Address('4957046151241062485'),
     }),
     relay: 0,
     confirmations: 0,
     secondSignature: undefined,
-    senderAddress: BigInt('4995063339468361088'),
+    senderAddress: new Address('4995063339468361088'),
 };
 
 suite

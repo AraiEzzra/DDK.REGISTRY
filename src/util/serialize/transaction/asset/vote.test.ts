@@ -3,14 +3,15 @@ import { expect } from 'chai';
 import { AssetVote } from '../../../../../src/model/common/transaction/asset/vote';
 import { assetVoteSerializer } from '../../../../../src/util/serialize/transaction/asset/vote';
 import { VoteType } from '../../../../../src/model/common/type';
+import { Address } from '../../../../model/common/address';
 
 describe('Vote asset serializer', () => {
     it('Serialize', () => {
         const asset = new AssetVote({
             airdropReward: {
                 sponsors: new Map()
-                    .set(BigInt('4995063339468361081'), 100)
-                    .set(BigInt('4995063339468361002'), 50),
+                    .set(new Address('4995063339468361081'), 100)
+                    .set(new Address('4995063339468361002'), 50),
             },
             type: VoteType.VOTE,
             reward: 10000000,
@@ -55,8 +56,8 @@ describe('Vote asset serializer', () => {
         const expected = new AssetVote({
             airdropReward: {
                 sponsors: new Map()
-                    .set(BigInt('4995063339468361081'), 100)
-                    .set(BigInt('4995063339468361002'), 50),
+                    .set(new Address('4995063339468361081'), 100)
+                    .set(new Address('4995063339468361002'), 50),
             },
             type: VoteType.VOTE,
             reward: 10000000,

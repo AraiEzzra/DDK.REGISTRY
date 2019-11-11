@@ -2,11 +2,12 @@ import { expect } from 'chai';
 
 import { AssetSend } from '../../../../../src/model/common/transaction/asset/send';
 import { assetSendSerializer } from '../../../../../src/util/serialize/transaction/asset/send';
+import { Address } from '../../../../model/common/address';
 
 describe('Send asset serializer', () => {
     it('Serialize', () => {
         const asset = new AssetSend({
-            recipientAddress: BigInt('10692727514166545843'),
+            recipientAddress: new Address('10692727514166545843'),
             amount: 100000000,
         });
 
@@ -29,7 +30,7 @@ describe('Send asset serializer', () => {
         const asset = assetSendSerializer.deserialize(serializedAsset);
 
         const expected = new AssetSend({
-            recipientAddress: BigInt('10692727514166545843'),
+            recipientAddress: new Address('10692727514166545843'),
             amount: 100000000,
         });
 

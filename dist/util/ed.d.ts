@@ -1,8 +1,5 @@
 /// <reference types="node" />
-export interface IKeyPair {
-    publicKey: Buffer;
-    privateKey: Buffer;
-}
+import { IKeyPair } from '../model/common/keyPair';
 export declare class Ed {
     makeKeyPair(hash: Buffer): IKeyPair;
     sign(hash: Buffer, keyPair: IKeyPair): Buffer;

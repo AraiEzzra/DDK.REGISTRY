@@ -1,7 +1,8 @@
-import { Address, PublicKey, Timestamp, TransactionId, BlockId } from '../type';
+import { PublicKey, Timestamp, TransactionId, BlockId } from '../type';
 import { TransactionType } from './type';
 import { TransactionStatus } from './status';
 import { Asset } from './asset';
+import { Address } from '../address';
 export declare type TransactionSchema<T extends Asset> = {
     id: TransactionId;
     blockId: BlockId;

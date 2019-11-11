@@ -17,14 +17,14 @@ class AssetReferral extends _1.Asset {
     }
     getBytes() {
         const buff = Buffer.alloc(transaction_1.ADDRESS_LENGTH);
-        buffer_1.default.writeUInt64LE(buff, this.referral, 0);
+        buffer_1.default.writeUInt64LE(buff, this.referral.value, 0);
         return buff;
     }
     getBufferSize() {
         return transaction_1.ADDRESS_LENGTH;
     }
     writeBytes(buffer, offset) {
-        return buffer_1.default.writeUInt64LE(buffer, this.referral, offset);
+        return buffer_1.default.writeUInt64LE(buffer, this.referral.value, offset);
     }
     calculateFee() {
         return 0;

@@ -57,7 +57,7 @@ export class AssetVote extends Asset {
 
         offset = 0;
         for (const [sponsorAddress, reward] of this.airdropReward.sponsors) {
-            offset = BUFFER.writeUInt64LE(sponsorsBuffer, sponsorAddress, offset);
+            offset = BUFFER.writeUInt64LE(sponsorsBuffer, sponsorAddress.value, offset);
             offset = BUFFER.writeUInt64LE(sponsorsBuffer, reward, offset);
         }
 
@@ -81,7 +81,7 @@ export class AssetVote extends Asset {
         offset = BUFFER.writeUInt64LE(buffer, this.unstake, offset);
 
         for (const [sponsorAddress, reward] of this.airdropReward.sponsors) {
-            offset = BUFFER.writeUInt64LE(buffer, sponsorAddress, offset);
+            offset = BUFFER.writeUInt64LE(buffer, sponsorAddress.value, offset);
             offset = BUFFER.writeUInt64LE(buffer, reward, offset);
         }
 

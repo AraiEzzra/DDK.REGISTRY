@@ -1,8 +1,9 @@
-import { IAssetSerializer } from '..';
 import { AssetSend } from '../../../../model/common/transaction/asset/send';
 import { RawAsset } from '../../../../model/common/type';
+import { Address } from '../../../../model/common/address';
+import { ISerializer } from '../..';
 
-class AssetSendSerializer implements IAssetSerializer<AssetSend> {
+class AssetSendSerializer implements ISerializer<RawAsset, AssetSend> {
     serialize(asset: AssetSend): RawAsset {
         return {
             recipientAddress: asset.recipientAddress.toString(),
@@ -12,7 +13,7 @@ class AssetSendSerializer implements IAssetSerializer<AssetSend> {
 
     deserialize(rawAsset: RawAsset): AssetSend {
         return new AssetSend({
-            recipientAddress: BigInt(rawAsset.recipientAddress),
+            recipientAddress: new Address(rawAsset.recipientAddress),
             amount: rawAsset.amount,
         });
     }

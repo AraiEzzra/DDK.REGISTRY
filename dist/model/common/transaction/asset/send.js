@@ -20,7 +20,7 @@ class AssetSend extends _1.Asset {
     }
     getBytes() {
         const buff = Buffer.allocUnsafe(bufferSize);
-        let offset = buffer_1.default.writeUInt64LE(buff, this.recipientAddress, 0);
+        let offset = buffer_1.default.writeUInt64LE(buff, this.recipientAddress.value, 0);
         buffer_1.default.writeUInt64LE(buff, this.amount, offset);
         return buff;
     }
@@ -28,7 +28,7 @@ class AssetSend extends _1.Asset {
         return bufferSize;
     }
     writeBytes(buffer, offset) {
-        offset = buffer_1.default.writeUInt64LE(buffer, this.recipientAddress, offset);
+        offset = buffer_1.default.writeUInt64LE(buffer, this.recipientAddress.value, offset);
         return buffer_1.default.writeUInt64LE(buffer, this.amount, offset);
     }
     calculateFee() {

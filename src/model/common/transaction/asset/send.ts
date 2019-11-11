@@ -1,8 +1,8 @@
-import { Address } from '../../type';
 import { Asset } from '.';
 import { clone } from '../../../../util/clone';
 import BUFFER from '../../../../util/buffer';
 import { CONFIG_DEFAULT } from '../../../../config';
+import { Address } from '../../address';
 
 export type AssetSendSchema = {
     recipientAddress: Address;
@@ -30,7 +30,7 @@ export class AssetSend extends Asset {
 
     getBytes(): Buffer {
         const buff = Buffer.allocUnsafe(bufferSize);
-        let offset = BUFFER.writeUInt64LE(buff, this.recipientAddress, 0);
+        let offset = BUFFER.writeUInt64LE(buff, this.recipientAddress.value, 0);
         BUFFER.writeUInt64LE(buff, this.amount, offset);
         return buff;
     }
@@ -40,7 +40,7 @@ export class AssetSend extends Asset {
     }
 
     writeBytes(buffer: Buffer, offset: number): number {
-        offset = BUFFER.writeUInt64LE(buffer, this.recipientAddress, offset);
+        offset = BUFFER.writeUInt64LE(buffer, this.recipientAddress.value, offset);
         return BUFFER.writeUInt64LE(buffer, this.amount, offset);
     }
 

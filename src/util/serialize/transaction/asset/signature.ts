@@ -1,8 +1,8 @@
-import { IAssetSerializer } from '..';
 import { AssetSignature } from '../../../../model/common/transaction/asset/signature';
 import { RawAsset } from '../../../../model/common/type';
+import { ISerializer } from '../..';
 
-class AssetSignatureSerializer implements IAssetSerializer<AssetSignature> {
+class AssetSignatureSerializer implements ISerializer<RawAsset, AssetSignature> {
     serialize(asset: AssetSignature): RawAsset {
         return {
             publicKey: asset.publicKey,

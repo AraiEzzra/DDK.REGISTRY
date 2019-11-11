@@ -8,13 +8,10 @@ import { assetStakeSerializer } from './asset/stake';
 import { assetVoteSerializer } from './asset/vote';
 import { Transaction } from '../../../model/common/transaction';
 import { getAddressByPublicKey } from '../../account';
+import { Address } from '../../../model/common/address';
+import { ISerializer } from '..';
 
-export interface IAssetSerializer<T extends Asset> {
-    serialize(asset: T): RawAsset;
-    deserialize(rawAsset: RawAsset): T;
-}
-
-const ASSET_SERIALIZATORS: { [key: string]: IAssetSerializer<Asset> } = {
+const ASSET_SERIALIZATORS: { [key: string]: ISerializer<RawAsset, Asset> } = {
     [TransactionType.REFERRAL]: assetReferralSerializer,
     [TransactionType.SEND]: assetSendSerializer,
     [TransactionType.SIGNATURE]: assetSendSerializer,
@@ -25,7 +22,7 @@ const ASSET_SERIALIZATORS: { [key: string]: IAssetSerializer<Asset> } = {
 
 class TransactionSerializer {
     serialize(trs: Transaction<Asset>): SerializedTransaction {
-        const assetSerializer: IAssetSerializer<Asset> = ASSET_SERIALIZATORS[trs.type];
+        const assetSerializer: ISerializer<RawAsset, Asset> = ASSET_SERIALIZATORS[trs.type];
         const asset = assetSerializer ? assetSerializer.serialize(trs.asset) : trs.asset;
 
         return {
@@ -46,7 +43,7 @@ class TransactionSerializer {
     }
 
     deserialize(rawTrs: RawTransaction): Transaction<Asset> {
-        const assetSerializer: IAssetSerializer<Asset> = ASSET_SERIALIZATORS[rawTrs.type];
+        const assetSerializer: ISerializer<RawAsset, Asset> = ASSET_SERIALIZATORS[rawTrs.type];
         const asset = assetSerializer ? assetSerializer.deserialize(rawTrs.asset) : rawTrs.asset;
 
         return new Transaction<Asset>({
@@ -56,7 +53,7 @@ class TransactionSerializer {
             createdAt: Number(rawTrs.createdAt),
             senderPublicKey: rawTrs.senderPublicKey,
             senderAddress: rawTrs.senderAddress
-                ? BigInt(rawTrs.senderAddress)
+                ? new Address(rawTrs.senderAddress)
                 : getAddressByPublicKey(rawTrs.senderPublicKey),
             signature: rawTrs.signature,
             secondSignature: rawTrs.secondSignature,

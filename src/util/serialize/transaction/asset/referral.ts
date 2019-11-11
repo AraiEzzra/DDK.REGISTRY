@@ -1,8 +1,9 @@
-import { IAssetSerializer } from '..';
 import { AssetReferral } from '../../../../model/common/transaction/asset/referral';
 import { RawAsset } from '../../../../model/common/type';
+import { Address } from '../../../../model/common/address';
+import { ISerializer } from '../..';
 
-class AssetReferralSerializer implements IAssetSerializer<AssetReferral> {
+class AssetReferralSerializer implements ISerializer<RawAsset, AssetReferral> {
     serialize(asset: AssetReferral): RawAsset {
         return {
             referral: asset.referral.toString(),
@@ -11,7 +12,7 @@ class AssetReferralSerializer implements IAssetSerializer<AssetReferral> {
 
     deserialize(rawAsset: RawAsset): AssetReferral {
         return new AssetReferral({
-            referral: BigInt(rawAsset.referral),
+            referral: new Address(rawAsset.referral),
         });
     }
 }

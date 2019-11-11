@@ -32,7 +32,7 @@ class AssetVote extends _1.Asset {
         const sponsorsBuffer = Buffer.alloc(REWARD_BUFFER_SIZE * config_1.CONFIG_DEFAULT.MAX_REFERRAL_COUNT);
         offset = 0;
         for (const [sponsorAddress, reward] of this.airdropReward.sponsors) {
-            offset = buffer_1.default.writeUInt64LE(sponsorsBuffer, sponsorAddress, offset);
+            offset = buffer_1.default.writeUInt64LE(sponsorsBuffer, sponsorAddress.value, offset);
             offset = buffer_1.default.writeUInt64LE(sponsorsBuffer, reward, offset);
         }
         const voteBuffer = Buffer.from(this.votes.join(''), 'utf8');
@@ -50,7 +50,7 @@ class AssetVote extends _1.Asset {
         offset = buffer_1.default.writeUInt64LE(buffer, this.reward, offset);
         offset = buffer_1.default.writeUInt64LE(buffer, this.unstake, offset);
         for (const [sponsorAddress, reward] of this.airdropReward.sponsors) {
-            offset = buffer_1.default.writeUInt64LE(buffer, sponsorAddress, offset);
+            offset = buffer_1.default.writeUInt64LE(buffer, sponsorAddress.value, offset);
             offset = buffer_1.default.writeUInt64LE(buffer, reward, offset);
         }
         if (this.airdropReward.sponsors.size < config_1.CONFIG_DEFAULT.MAX_REFERRAL_COUNT) {

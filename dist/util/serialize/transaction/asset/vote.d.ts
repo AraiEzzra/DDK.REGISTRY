@@ -1,7 +1,7 @@
-import { IAssetSerializer } from '..';
 import { AssetVote } from '../../../../model/common/transaction/asset/vote';
 import { RawAsset } from '../../../../model/common/type';
-declare class AssetVoteSerializer implements IAssetSerializer<AssetVote> {
+import { ISerializer } from '../..';
+declare class AssetVoteSerializer implements ISerializer<RawAsset, AssetVote> {
     serialize(asset: AssetVote): RawAsset;
     deserialize(rawAsset: RawAsset): AssetVote;
 }

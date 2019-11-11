@@ -1,8 +1,9 @@
 import crypto from 'crypto';
 
-import { PublicKey, Address } from '../model/common/type';
+import { PublicKey } from '../model/common/type';
 import { ADDRESS_BYTES_LENGTH } from '../const';
 import { bufferToHex } from './buffer';
+import { Address } from '../model/common/address';
 
 export const getAddressByPublicKey = (publicKey: PublicKey): Address => {
     // @ts-ignore
@@ -11,5 +12,5 @@ export const getAddressByPublicKey = (publicKey: PublicKey): Address => {
     for (let i = 0; i < ADDRESS_BYTES_LENGTH; i++) {
         temp[i] = publicKeyHash[ADDRESS_BYTES_LENGTH - 1 - i];
     }
-    return BigInt(bufferToHex(temp).toString());
+    return new Address(bufferToHex(temp).toString());
 };

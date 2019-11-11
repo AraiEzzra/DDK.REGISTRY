@@ -1,6 +1,6 @@
 /// <reference types="node" />
-import { Address } from '../../type';
 import { Asset } from '.';
+import { Address } from '../../address';
 export declare type AssetSendSchema = {
     recipientAddress: Address;
     amount: number;

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const vote_1 = require("../../../../model/common/transaction/asset/vote");
+const address_1 = require("../../../../model/common/address");
 class AssetVoteSerializer {
     serialize(asset) {
         return {
@@ -22,7 +23,7 @@ class AssetVoteSerializer {
             type: rawAsset.type,
             airdropReward: {
                 sponsors: new Map(rawAsset.airdropReward.sponsors
-                    .map((elem) => [BigInt(elem[0]), elem[1]])),
+                    .map((elem) => [new address_1.Address(elem[0]), elem[1]])),
             },
         });
     }

@@ -2,6 +2,7 @@ import { Account } from './account';
 import { TransactionType } from './transaction/type';
 import { Asset } from './transaction/asset';
 import { StakeSchema } from './transaction/stake';
+import { Address } from './address';
 export declare type TransactionId = string;
 export declare type BlockId = string;
 export declare type RawTransaction = {
@@ -10,7 +11,6 @@ export declare type RawTransaction = {
 export declare type RawAsset = {
     [key: string]: any;
 };
-export declare type Address = BigInt;
 export declare type PublicKey = string;
 export declare type Timestamp = number;
 export declare type AirdropReward = {

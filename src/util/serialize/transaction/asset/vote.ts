@@ -1,8 +1,9 @@
-import { IAssetSerializer } from '..';
 import { AssetVote } from '../../../../model/common/transaction/asset/vote';
 import { RawAsset } from '../../../../model/common/type';
+import { ISerializer } from '../..';
+import { Address } from '../../../../model/common/address';
 
-class AssetVoteSerializer implements IAssetSerializer<AssetVote> {
+class AssetVoteSerializer implements ISerializer<RawAsset, AssetVote> {
     serialize(asset: AssetVote): RawAsset {
         return {
             votes: asset.votes,
@@ -23,8 +24,8 @@ class AssetVoteSerializer implements IAssetSerializer<AssetVote> {
             unstake: rawAsset.unstake,
             type: rawAsset.type,
             airdropReward: {
-                sponsors: new Map(rawAsset.airdropReward.sponsors
-                    .map((elem: [string, number]) => [BigInt(elem[0]), elem[1]])),
+                sponsors: new Map<Address, number>(rawAsset.airdropReward.sponsors
+                    .map((elem: [string, number]) => [new Address(elem[0]), elem[1]])),
             },
         });
     }

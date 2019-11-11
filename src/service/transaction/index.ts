@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 
 import { Transaction, TransactionSchema } from '../../model/common/transaction';
-import { IKeyPair, Ed, ed } from '../../util/ed';
+import { Ed, ed } from '../../util/ed';
 import { TransactionType } from '../../model/common/transaction/type';
 import { ResponseEntity } from '../../model/common/responseEntity';
 import { getAddressByPublicKey } from '../../util/account';
@@ -11,6 +11,7 @@ import { TransactionCreationData } from '../../model/common/type';
 import { createKeyPairBySecret } from '../../util/crypto';
 import { slotService } from '../slot';
 import { CONFIG_DEFAULT } from '../../config';
+import { IKeyPair } from '../../model/common/keyPair';
 
 export interface ITransactionCreator {
     create(params: TransactionCreationData): ResponseEntity<Transaction<any>>;

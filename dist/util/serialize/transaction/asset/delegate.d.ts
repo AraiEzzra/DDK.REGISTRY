@@ -1,7 +1,7 @@
-import { IAssetSerializer } from '..';
 import { AssetDelegate } from '../../../../model/common/transaction/asset/delegate';
 import { RawAsset } from '../../../../model/common/type';
-declare class AssetDelegateSerializer implements IAssetSerializer<AssetDelegate> {
+import { ISerializer } from '../..';
+declare class AssetDelegateSerializer implements ISerializer<RawAsset, AssetDelegate> {
     serialize(asset: AssetDelegate): RawAsset;
     deserialize(rawAsset: RawAsset): AssetDelegate;
 }

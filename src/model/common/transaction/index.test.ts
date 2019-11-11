@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import { Transaction } from '.';
 import { AssetSend } from './asset/send';
 import { TransactionType } from './type';
+import { Address } from '../address';
 
 describe('Transaction Model', () => {
     it('Copy', () => {
@@ -17,7 +18,7 @@ describe('Transaction Model', () => {
             fee: 0,
             confirmations: 0,
             asset: new AssetSend({
-                recipientAddress: BigInt('7897332094363171058'),
+                recipientAddress: new Address('7897332094363171058'),
                 amount: 10000,
             }),
         });
