@@ -46,6 +46,7 @@ export enum LENGTH {
     PUBLIC_KEY = 32,
     ID = 32,
     SIGNATURE = 64,
+    ADDRESS_BINARY_SIZE = 64,
 }
 
 export type SerializedDelegate = {

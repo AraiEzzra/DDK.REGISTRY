@@ -24,11 +24,11 @@ Validator.registerFormat('id', (str) => {
 });
 
 Validator.registerFormat('address', (str) => {
-    if (str.length === 0) {
-        return true;
+    try {
+        return BigInt(str).toString(2).length <= LENGTH.ADDRESS_BINARY_SIZE;
+    } catch (e) {
+        return false;
     }
-
-    return /^\d{8,21}$/.test(str);
 });
 
 Validator.registerFormat('limit', (value: string | number): boolean => {
